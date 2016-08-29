@@ -1,0 +1,29 @@
+{
+  "name": "fit-for-the-kingdon-node.js-capstone",
+  "version": "1.0.0",
+  "description": "Health tracking website",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone.git"
+  },
+  "keywords": [
+    "health",
+    "tracker",
+    "node.js"
+  ],
+  "author": "Kylo Jorgensen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone/issues"
+  },
+  "homepage": "https://github.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.10"
+  }
+}
