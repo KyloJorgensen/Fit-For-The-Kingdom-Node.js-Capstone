@@ -1,7 +1,7 @@
 'use strict';
 var Date = require('../date/date.model'),
     User = require('./user.model'),
-    bcrypt = require('bcrypt');
+    bcrypt = require('bcryptjs');
 
 function UserController() {};
 
