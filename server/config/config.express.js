@@ -5,7 +5,6 @@ var express = require('express'),
 	bodyParser = require('body-parser');
 
 module.exports = function(app) {
-
     app.set('root', path.join(__dirname , "../.."));
     app.use(bodyParser.json());    
     app.use(bodyParser.urlencoded({
@@ -13,5 +12,4 @@ module.exports = function(app) {
     }));
     app.use('/public', express.static(app.get('root') +  '/public'));
     app.use('/libs', express.static(app.get('root') + '/node_modules'));
-
 };

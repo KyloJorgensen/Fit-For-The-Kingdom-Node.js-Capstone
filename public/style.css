@@ -1,0 +1,126 @@
+body {
+	background-image: url("images/IMG_0936.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+nav {
+	position: fixed;
+	width: 100%;
+	height: 4rem;
+    background-color: #bebedc;
+    margin: -16px -8px;
+}
+
+nav * {
+	display: inline-block;
+}
+
+.nav-title {
+	float: left;
+	padding-left: 4rem;
+}
+
+.nav-menu {
+	float: right;
+	padding: 1.3rem;
+}
+
+.nav-menu .loggedIn{
+	display: none;
+}
+
+main {
+	padding: 50px 0px;
+}
+
+main .container {
+	min-height: 150px;
+}
+
+.toggle {
+	display: none;
+}
+
+main ul {
+	list-style: none;
+	padding-left: 0px;
+}
+
+.user ul {
+	padding-left: 0px;
+	display: inline-block;
+	width: 100%;
+}
+
+.users-table {
+	width: 60%;
+	display: inline-block;
+}
+
+.users-names ul li {
+	margin: 8px 0px;
+}
+
+.users-winnerStand {
+	float: right;
+	width: 30%;
+	display: inline-block;
+}
+
+.users-names {
+	float: left;
+	width: 100%;
+}
+
+.users-names > * {
+	width: 49%;
+	display: inline-block;
+}
+
+.users-names button {
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	margin: 3px 0;
+	width: 100%;
+}
+
+.user-header p,
+.user-table p{
+	display: inline-block;
+	width: 10%;
+}
+
+.user-menu * {
+	display: inline-block;
+	padding-right: 20px;
+	width: 20%;
+}
+
+.userDate .userDate-button-delete {
+	float: right;
+}
+
+.userDate input {
+	width: 50px;
+}
+
+footer {
+	background-color: grey;
+	position: fixed;
+	bottom: 0px;
+	margin: 0 -8px;
+	width: 100%;
+}
+
+.container {
+	width: 60%;
+    margin: 10px auto;
+    padding: 25px;
+    background-color: white;
+}
+
+.admin {
+	display: none;
+}

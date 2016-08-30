@@ -3,8 +3,143 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Fit For The Kingdom</title>
+	<link rel="stylesheet" href="public/style.css">
 </head>
 <body>
-	<p>Hello World!</p>
+	<nav>
+		<h1 class="nav-title">Fit For The Kingdom</h1>
+		<div class="nav-menu">
+			<button data-bind="click: getUsers">MAIN</button>
+			<button class="loggedOut" data-bind="click: showLogin">LOGIN</button>
+			<button class="loggedOut" data-bind="click: newUser">SIGN UP</button>
+			<button class="loggedIn" data-bind="click: showUser">PROFILE</button>
+			<button class="loggedIn" data-bind="click: logout">LOGOUT</button>
+		</div>
+	</nav>
+	<!-- nav -->
+
+	<main>
+		<div class="container">
+			
+			<div class="login toggle">
+				<form data-bind="submit: validatelogin">
+					<h2>LOGIN</h2>
+					User Name: <input type="text" data-bind="value: userName" />
+					Password: <input type="text" data-bind="value: userPassword" />
+					<input type="submit" value="LOGIN" />
+				</form>
+			</div>
+			<!-- Login -->
+			<div class="users toggle">
+				<div class="users-table">
+					<div class="users-names">
+						<p>Names</p>
+						<p>Score</p>
+						<ul data-bind="foreach: users">
+							<li>
+								<p data-bind="text: name"></p>
+							</li>
+						</ul>
+						<ul data-bind="foreach: users">
+							<li>
+								<p data-bind="text: totalScore"></p>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="users-winnerStand">
+					<h2>Winners Stand</h2>
+					<ol type="I" data-bind="foreach: winnerstand">
+						<li>
+							<p><span data-bind="text: name"></span> : <span data-bind="text: score"></span></p>
+						</li>
+					</ul>					
+				</div>
+			</div>
+			<!-- Users -->
+			<div class="newUser toggle">
+				<h1>SIGN UP</h1>
+				<form data-bind="submit: validateNewUser">
+				    Name: <input placeholder="Name" data-bind="value: newUserName" />
+				    Username: <input placeholder="Username" data-bind="value: newUserUsername" />
+				    Password: <input placeholder="Password" data-bind="value: newUserPassword" />
+				    Verify Pasword: <input placeholder="Password" data-bind="value: newUserVerifyPassword" />
+				    <button type="submit">SIGN UP</button>
+				</form>
+			</div>
+			<!-- New User -->
+			<div class="user toggle" data-bind="foreach: currentUser">
+				<div class="user-menu">
+					<p data-bind="text: name"></p>
+					<p>Total Score : <span data-bind="text: totalScore"></span></p>
+					<button data-bind="click: $root.veiwAddNewUserDate">New Date</button>	
+					<button class="admin deleteUserButton" data-bind="click: $root.deleteUser">Delete User</button>					
+				</div>
+				<div class="user-header">
+					<p>Date</p>
+					<p>Exercise</p>	
+					<p>No sugar</p>
+					<p>No soda</p>
+					<p>Healthy Choice</p>						
+					<p>Satisfied</p>						
+					<p>Day's Score</p>	
+				</div>
+				<ul class="user-table" data-bind="foreach: $root.currentDates">
+					<li>
+						<p data-bind="text: date"></p>
+						<p data-bind="text: exercise"></p>
+						<p data-bind="text: sugar"></p>	
+						<p data-bind="text: soda"></p>
+						<p data-bind="text: healthyChoice"></p>
+						<p data-bind="text: satisfied"></p>
+						<p data-bind="text: score"></p>
+						<button data-bind="click: $root.editDate">EDIT</button>
+					</li>
+				</ul>											
+			</div>
+			<!-- User -->
+			<div class="userDate toggle">
+				<ul data-bind="foreach: currentUserDate">
+					<li>
+						<form data-bind="submit: $root.validateDateInputs">
+							<div data-bind="with: $root">
+								<p data-bind="foreach: currentUser">User: <span id="name" data-bind="text: name"></span></p>
+							</div>
+							<p>Date: <span id="date" data-bind="text: date" ></span></p>
+							<p>Exercise: <input type="number" min="0" id="exercise" data-bind="value: exercise" /> (+1 for every 10mins)</p>
+							<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" />(number)</p>
+							<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" />(0-3)</p>
+							<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedSoda" />(true or false)</p>
+							<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedSugar" />(true or false)</p>
+							<button type="submit">SAVE</button>
+							<button class="userDate-button-delete" data-bind="click: $root.deleteUserDate">DELETE</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+			<!-- userDate -->
+
+			<div class="newUserDate toggle">
+				<div data-bind="foreach: currentUser">
+					<h2 data-bind="text: name"></h1>
+				</div>
+				<p>New Date</p>
+				<input type="date" data-bind="value: newUserDate">
+				<button data-bind="click: addNewUserDate">ADD</button>
+			</div>
+		</div>
+		<!-- container -->
+	</main>
+	<!-- main -->
+
+	<footer>
+		<div>
+			<p></p>
+		</div>
+	</footer>
+	<!-- footer -->
+	<script src="libs/jquery/dist/jquery.min.js"></script>
+	<script src="libs/knockout/build/output/knockout-latest.js"></script>
+	<script src="public/app.js"></script>	
 </body>
 </html>

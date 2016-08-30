@@ -23,8 +23,11 @@
   },
   "homepage": "https://github.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone#readme",
   "dependencies": {
+    "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "jquery": "^3.1.0",
+    "knockout": "^3.4.0",
     "mongoose": "^4.5.10"
   },
   "devDependencies": {
