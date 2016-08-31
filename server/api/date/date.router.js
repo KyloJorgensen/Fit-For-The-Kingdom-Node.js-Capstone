@@ -5,7 +5,7 @@ var router = express.Router();
 var controller = require('./date.controller');
 
 
-router.get('/user/:userId', controller.getUserDates)
+router.get('/users/:userId', controller.getUserDates)
 	.get('/date/:dateId', controller.getDate)
 	.post('/', controller.createDate)
 	.put('/', controller.updateDate)

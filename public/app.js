@@ -2,7 +2,7 @@
 
 var Model = function(self) {
 	var that = this;
-	var password = '';
+	this.user = {};
 
 	this.getUsers = function() {
 		$.ajax({
@@ -28,10 +28,8 @@ var Model = function(self) {
 		    contentType: 'application/json',
 		    url: '/user'
 		}).done(function(user) {
-			console.log(user);
+	    	that.user = {username: username, password: password};
 	    	self.login(user);
-	    	self.password = password;
-	    	console.log(password);
 	    }).fail(function(error){
 	        console.log(error);
 	    });
@@ -41,7 +39,7 @@ var Model = function(self) {
 		$.ajax({
 		    type: 'GET',
 		    contentType: 'application/json',
-		    url: '/date/user/' + user._id 
+		    url: '/date/users/' + user._id
 		}).done(function(date) {
 	    	self.generateUserDates(date);
 	    }).fail(function(error){
@@ -49,11 +47,10 @@ var Model = function(self) {
 	    });
 	};
 
-	this.createDate = function(userId, date) {
+	this.createDate = function(date) {
 		var data = {};
-		data.userId = userId;
 		data.date = date;
-		data.password = that.password;
+		data.user = that.user;
 		$.ajax({
 		    type: 'POST',
 		    data: JSON.stringify(data),
@@ -71,9 +68,12 @@ var Model = function(self) {
 	};
 
 	this.updateDate = function(date) {
+		var data = {};
+		data.date = date;
+		data.user = that.user;
 		$.ajax({
 		    type: 'PUT',
-		    data: JSON.stringify(date),
+		    data: JSON.stringify(data),
 		    contentType: 'application/json',
 		    url: '/date'
 		}).done(function(user) {
@@ -98,7 +98,7 @@ var Model = function(self) {
 	this.deleteUserDate = function(userId, dateId) {
 		var data = {};
 		data.dateId = dateId;
-		data._author = userId;
+		data.user = that.user;
 
 		$.ajax({
 		    type: 'DELETE',
@@ -123,19 +123,16 @@ var Model = function(self) {
 		    contentType: 'application/json',
 		    url: '/login'
 		}).done(function(user) {
+	    	that.user = {username: username, password: password};
 	    	self.login(user);
-	    	that.password = password;
 	    }).fail(function(error){
 	        console.log(error);
 	    });
 	};
 
 	this.getUser = function(userId) {
-		var data = {};
-		data.password = that.password;
 		$.ajax({
 			type: 'GET',
-			data: JSON.stringify(data),
 			contentType: 'application/json',
 			url: '/user/' + userId
 		}).done(function(user) {
@@ -234,7 +231,6 @@ var ViewModel = function(Model) {
 	this.currentDates = ko.observableArray([]);
 
 	this.getUser = function() {
-		console.log(self.currentUser()[0]);
 		model.getUser(self.currentUser()[0]._id);
 	};
 
@@ -291,7 +287,7 @@ var ViewModel = function(Model) {
 	};
 
 	this.addNewUserDate = function() {
-		model.createDate(self.currentUser()[0]._id, self.newUserDate());
+		model.createDate(self.newUserDate());
 	};
 
 	this.deleteUserDate = function() {
@@ -387,6 +383,7 @@ var ViewModel = function(Model) {
 	};
 
 	this.logout = function() {
+		model.user = {};
 		self.currentUser([]);
 		self.getUsers();
 		self.showLogout();

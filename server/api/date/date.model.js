@@ -6,11 +6,11 @@ var mongoose = require('mongoose');
 var dateSchema = mongoose.Schema({
     _author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        require: true
     },
     date: {
         type: String,
-        unique: true,
         require: true
     },
     exercise: Number,
