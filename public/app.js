@@ -141,6 +141,23 @@ var Model = function(self) {
 			console.log(error);
 		});
 	};
+
+	this.updateUserPublicStatus = function(publicStatus) {
+		var data = {};
+		data.user = that.user;
+		data.publicStatus = publicStatus;
+
+		$.ajax({
+		    type: 'PUT',
+		    data: JSON.stringify(data),
+		    contentType: 'application/json',
+		    url: '/user/publicStatus'
+		}).done(function(user) {
+	    	self.generateUser(user);
+	    }).fail(function(error){
+	        console.log(error);
+	    });
+	};
 };
 
 var ViewModel = function(Model) {
@@ -237,6 +254,7 @@ var ViewModel = function(Model) {
 	this.generateUser = function(user) {
 		self.currentUser.splice(0, self.currentUser().length);
 		self.currentUser.push(user);
+		self.updatePublicStatusDisplay(user.publicStatus);
 		model.getUserDates(user);
 		self.showUser();
 	};
@@ -397,6 +415,20 @@ var ViewModel = function(Model) {
 	this.showLogout = function() {
 		$('.loggedIn').hide();
 		$('.loggedOut').show();
+	};
+
+	this.publicStatusClicked = function(user) {
+		model.updateUserPublicStatus(!user.publicStatus);
+	};
+
+	this.publicStatusDisplay = ko.observable('Public');
+
+	this.updatePublicStatusDisplay = function(publicStatus) {
+		if (publicStatus) {
+			self.publicStatusDisplay('Public');
+		} else {
+			self.publicStatusDisplay('Private');
+		}
 	};
 
 	model.getUsers(true);

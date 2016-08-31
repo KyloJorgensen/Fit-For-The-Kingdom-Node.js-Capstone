@@ -35,7 +35,7 @@ main {
 }
 
 main .container {
-	min-height: 150px;
+	min-height: 250px;
 }
 
 .toggle {
@@ -70,7 +70,7 @@ main ul {
 
 .users-names {
 	float: left;
-	width: 100%;
+	width: 130%;
 }
 
 .users-names > * {
@@ -89,7 +89,7 @@ main ul {
 .user-header p,
 .user-table p{
 	display: inline-block;
-	width: 10%;
+	width: 13%;
 }
 
 .user-menu * {
@@ -123,4 +123,57 @@ footer {
 
 .admin {
 	display: none;
+}
+
+@media screen and (max-width: 1300px) {
+
+	.user-small-screen {
+		display: none !important;
+	}
+
+	.user-header p,
+	.user-table p {
+		width: 30%;
+	}
+}
+
+@media screen and (max-width: 1150px) {
+
+	.user-menu * {
+		display: block;
+		width: 100%;
+	}
+	.admin {
+		display: none;
+	}
+
+	.user-menu * span {
+		display: inline;
+	}
+}
+
+@media screen and (max-width: 520px) {
+
+	nav {
+		height: 7.5rem;
+	}
+	
+	.container {
+		margin-top: 54px;
+	}
+
+}
+
+@media screen and (max-width: 460px) {
+	
+	.container {
+		width: 260px;
+	}
+}
+
+@media screen and (max-width: 350px) {
+	
+	nav {
+		width: 320px;
+	}
 }

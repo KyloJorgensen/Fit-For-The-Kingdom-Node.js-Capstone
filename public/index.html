@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Fit For The Kingdom</title>
 	<link rel="stylesheet" href="public/style.css">
 </head>
@@ -24,8 +25,8 @@
 			<div class="login toggle">
 				<form data-bind="submit: validatelogin">
 					<h2>LOGIN</h2>
-					User Name: <input type="text" data-bind="value: userName" />
-					Password: <input type="text" data-bind="value: userPassword" />
+					<p>User Name: <input type="text" data-bind="value: userName" /></p>
+					<p>Password: <input type="text" data-bind="value: userPassword" /></p>
 					<input type="submit" value="LOGIN" />
 				</form>
 			</div>
@@ -60,10 +61,10 @@
 			<div class="newUser toggle">
 				<h1>SIGN UP</h1>
 				<form data-bind="submit: validateNewUser">
-				    Name: <input placeholder="Name" data-bind="value: newUserName" />
-				    Username: <input placeholder="Username" data-bind="value: newUserUsername" />
-				    Password: <input placeholder="Password" data-bind="value: newUserPassword" />
-				    Verify Pasword: <input placeholder="Password" data-bind="value: newUserVerifyPassword" />
+				    <p>Name: <input placeholder="Name" data-bind="value: newUserName" /><p>
+				    <p>Username: <input placeholder="Username" data-bind="value: newUserUsername" /></p>
+				    <p>Password: <input placeholder="Password" data-bind="value: newUserPassword" /></p>
+				    <p>Verify Pasword: <input placeholder="Password" data-bind="value: newUserVerifyPassword" /></p>
 				    <button type="submit">SIGN UP</button>
 				</form>
 			</div>
@@ -72,26 +73,27 @@
 				<div class="user-menu">
 					<p data-bind="text: name"></p>
 					<p>Total Score : <span data-bind="text: totalScore"></span></p>
-					<button data-bind="click: $root.veiwAddNewUserDate">New Date</button>	
+					<input type="button" data-bind="click: $root.veiwAddNewUserDate" value="New Date"/>
+					<input type="button" data-bind="click: $root.publicStatusClicked, value: $root.publicStatusDisplay" />
 					<button class="admin deleteUserButton" data-bind="click: $root.deleteUser">Delete User</button>					
 				</div>
 				<div class="user-header">
 					<p>Date</p>
-					<p>Exercise</p>	
-					<p>No sugar</p>
-					<p>No soda</p>
-					<p>Healthy Choice</p>						
-					<p>Satisfied</p>						
+					<p class="user-small-screen">Exercise</p>	
+					<p class="user-small-screen">No sugar</p>
+					<p class="user-small-screen">No soda</p>
+					<p class="user-small-screen">Healthy Choice</p>						
+					<p class="user-small-screen">Satisfied</p>						
 					<p>Day's Score</p>	
 				</div>
 				<ul class="user-table" data-bind="foreach: $root.currentDates">
 					<li>
 						<p data-bind="text: date"></p>
-						<p data-bind="text: exercise"></p>
-						<p data-bind="text: sugar"></p>	
-						<p data-bind="text: soda"></p>
-						<p data-bind="text: healthyChoice"></p>
-						<p data-bind="text: satisfied"></p>
+						<p data-bind="text: exercise" class="user-small-screen"></p>
+						<p data-bind="text: sugar" class="user-small-screen"></p>	
+						<p data-bind="text: soda" class="user-small-screen"></p>
+						<p data-bind="text: healthyChoice" class="user-small-screen"></p>
+						<p data-bind="text: satisfied" class="user-small-screen"></p>
 						<p data-bind="text: score"></p>
 						<button data-bind="click: $root.editDate">EDIT</button>
 					</li>

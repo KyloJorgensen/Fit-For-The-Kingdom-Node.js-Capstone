@@ -15,6 +15,7 @@ var userSchema = mongoose.Schema({
     },
     name: String,
     totalScore: Number,
+    publicStatus: Boolean,
     dates: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Date'

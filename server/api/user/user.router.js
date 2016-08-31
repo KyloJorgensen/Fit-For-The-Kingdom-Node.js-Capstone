@@ -9,5 +9,6 @@ router.get('/', controller.getUsers)
     .get('/:userId', controller.getUser)
     .post('/', controller.createUser)
     .delete('/:userId', controller.deleteUser)
+    .put('/publicStatus', controller.updatePublicStatus)
 
 module.exports = router;

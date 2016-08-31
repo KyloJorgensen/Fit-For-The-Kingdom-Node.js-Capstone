@@ -1,6 +1,7 @@
 'use strict';
-var Date = require('../date/date.model'),
-    User = require('./user.model'),
+var User = require('./user.model'),
+    Date = require('../date/date.model'),
+    Utility = require('../utility/utility'),
     bcrypt = require('bcryptjs');
 
 function UserController() {};
@@ -15,7 +16,15 @@ UserController.prototype.getUsers = function(req, res) {
             }
         });
     }).then(function(users) {
-        res.status(200).json(users);
+        var publicUsers = [];
+
+        for (var i = 0; i < users.length; i++) {
+            if (users[i].publicStatus) {
+                publicUsers.push(users[i]);
+            }
+        }
+        
+        res.status(200).json(publicUsers);
     }).catch(function(error) {
         console.log(error);
         res.status(500).json(error);
@@ -122,12 +131,12 @@ UserController.prototype.createUser = function(req, res) {
                     message: 'Internal server error'
                 });
             }
-            console.log(salt, hash);
             return new Promise(function(resolve, reject) {
                 User.create({
                     username: username,
                     password: hash,
-                    name: name, 
+                    name: name,
+                    publicStatus: true,
                     totalScore: 0
                 }, function(error, user) {
                     if (error) {
@@ -137,7 +146,6 @@ UserController.prototype.createUser = function(req, res) {
                     }
                 })
             }).then(function(user) {
-                console.log(user);
                 res.status(201).json(user);
             }).catch(function(error) {
                 console.log(error);
@@ -173,6 +181,32 @@ UserController.prototype.deleteUser = function(req, res) {
     }).catch(function(error) {
         console.log(error);
         res.status(500).json(error);
+    });
+};
+
+UserController.prototype.updatePublicStatus = function(req, res) {
+    Utility.validateLoggedIn(req, res, function(user) {
+        return new Promise(function(resolve, reject) {
+            User.findOneAndUpdate({
+                _id: user._id
+            },{
+                $set: {publicStatus: req.body.publicStatus}
+            }, {
+                new: true
+            }, function(error, user) {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(user);
+                }
+            });
+        }).then(function(user) {
+            res.status(200).json(user);
+        }).catch(function(error) {
+            console.log(error);
+            res.status(500).json(error);
+        })
+        
     });
 };
 

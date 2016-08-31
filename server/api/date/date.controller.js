@@ -1,40 +1,10 @@
 'use strict';
 
 var User = require('../user/user.model'),
-	Date = require('./date.model');
+	Date = require('./date.model'),
+	Utility = require('../utility/utility');
 
 function DateController() {};
-
-function validateLoggedIn(req, res, callback) {
-	return new Promise(function(resolve, reject) {
-        User.findOne({
-            username: req.body.user.username
-        }, function(error, user) {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(user);
-            }
-        });
-    }).then(function(user) {
-        user.validatePassword(req.body.user.password, function(err, isVaild) {
-            if (err) {
-                console.log(err);
-                res.status(300).json(err);
-            } else {
-                if (isVaild) {
-                    callback(user);
-                } else {
-                    console.log('Invald user');
-                    res.status(300).json({message: 'user is not logged in.'});
-                }
-            }
-        });
-    }).catch(function(error) {
-        console.log(error);
-        res.status(500).json(error);
-    });
-};
 
 DateController.prototype.getUserDates = function(req, res) {
 	return new Promise(function(resolve, reject) {
@@ -71,7 +41,7 @@ DateController.prototype.getDate = function(req, res) {
 };
 
 DateController.prototype.createDate = function(req, res) {
-	validateLoggedIn(req, res, function(user) {
+	Utility.validateLoggedIn(req, res, function(user) {
 		return new Promise(function(resolve, reject) {
 			Date.find({
 				_author: user._id
@@ -119,48 +89,8 @@ DateController.prototype.createDate = function(req, res) {
 	});
 };
 
-function updateUserTotalScore(req, res, userId, callback) {
-	return new Promise(function(resolve, reject) {
-		Date.find({_author: userId}, function(error, dates) {
-			if (error) {
-				reject(error);
-			} else {
-				resolve(dates);
-			}
-		});
-	}).then(function(dates){
-		var totalScore = 0;
-		for (var i = 0; i < dates.length; i++) {
-			totalScore += dates[i].score;
-		}
-		return new Promise(function(resolve, reject) {
-			User.findOneAndUpdate({
-				_id: userId
-			}, {
-				$set: {totalScore: totalScore}
-			}, {
-				new: true
-			}, function(err, user) {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(user);
-				}
-			});
-		}).then(function(user) {
-			callback(user);
-		}).catch(function(err) {
-			console.log(err);
-			res.status(500).json(err);
-		});
-	}).catch(function(error) {
-		console.log(error);
-		res.status(501).json(error);
-	});
-};
-
 DateController.prototype.updateDate = function(req, res) {
-	validateLoggedIn(req, res, function(user) {
+	Utility.validateLoggedIn(req, res, function(user) {
 		return new Promise(function(resolve, reject) {
 			var newDate = {};
 
@@ -207,7 +137,7 @@ DateController.prototype.updateDate = function(req, res) {
 				});
 			});
 		}).then(function(date) {
-			updateUserTotalScore(req, res, date._author, function(user) {
+			Utility.updateUserTotalScore(req, res, date._author, function(user) {
 				res.status(200).json(user)
 			});
 		}).catch(function(error) {
@@ -218,7 +148,7 @@ DateController.prototype.updateDate = function(req, res) {
 };
 
 DateController.prototype.deleteDate = function(req, res) {
-	validateLoggedIn(req, res, function(user) {
+	Utility.validateLoggedIn(req, res, function(user) {
 		return new Promise(function(resolve, reject) {
 			Date.findOneAndRemove({
 				_id: req.body.dateId
@@ -230,7 +160,7 @@ DateController.prototype.deleteDate = function(req, res) {
 				}
 			});
 		}).then(function(date) {
-			updateUserTotalScore(req, res, date._author, function(user) {
+			Utility.updateUserTotalScore(req, res, date._author, function(user) {
 				res.status(200).json(user)
 			});
 		}).catch(function(error) {
