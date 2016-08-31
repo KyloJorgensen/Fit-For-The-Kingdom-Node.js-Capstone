@@ -8,7 +8,11 @@ var dateSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    date: String,
+    date: {
+        type: String,
+        unique: true,
+        require: true
+    },
     exercise: Number,
     sugar: Boolean,
     soda: Boolean,

@@ -34,7 +34,20 @@ UserController.prototype.getUser = function(req, res) {
             }
         });
     }).then(function(user) {
-        res.status(200).json(user);
+        console.log(user);
+        user.validatePassword(req.body.password, function(err, isVaild) {
+            if (err) {
+                console.log(err);
+                res.status(300).json(err);
+            } else {
+                if (isVaild) {
+                    res.status(200).json(user);
+                } else {
+                    console.log('Invald user');
+                    res.status(300).json({message: 'user is not logged in.'});
+                }
+            }
+        });
     }).catch(function(error) {
         console.log(error);
         res.status(500).json(error);

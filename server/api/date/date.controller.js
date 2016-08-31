@@ -13,11 +13,12 @@ DateController.prototype.getUserDates = function(req, res) {
 			} else {
 				resolve(dates);
 			}
-		})
+		});
 	}).then(function(dates) {
 		res.status(200).json(dates);
 	}).catch(function(error) {
-		res.status(500).end();
+		console.log(error);
+		res.status(500).json(error);
 	});
 };
 
@@ -33,11 +34,26 @@ DateController.prototype.getDate = function(req, res) {
 	}).then(function(date) {
 		res.status(200).json(date);
 	}).catch(function(error) {
+		console.log(error);
 		res.status(500).json(error);
 	});
 };
 
 DateController.prototype.createDate = function(req, res) {
+	User.findOne({
+		_id: req.body.userId
+	}, function(error, user) {
+		user.validatePassword(req.body.password, function(error, isValid) {
+			if (error) {
+				return res.status(300).json(error);
+			} else {
+				if (!isValid) {
+					return res.status(300).json({message: 'User is not logged in.'});
+				}
+			}
+		});
+	});
+
 	return new Promise(function(resolve, reject) {
 		Date.find({_author: req.body.userId}, function(error, dates) {
 			if (error) {
@@ -73,10 +89,12 @@ DateController.prototype.createDate = function(req, res) {
 	    	});
 	    }).then(function(date) {
 	    	res.status(201).json(date);
-	    }).catch(function(error) {
+	    }).catch(function(err) {
+	    	console.log(err);
 	        res.status(500).json(error);
 	    });
 	}).catch(function(error) {
+		console.log(error);
 		res.status(500).json(error);
 	});
 };
@@ -129,9 +147,9 @@ DateController.prototype.updateDate = function(req, res) {
 		});
 	}).then(function(date) {
 		return new Promise(function(resolve, reject) {
-			Date.find({_author: req.body._author}, function(error, dates) {
-				if (error) {
-					reject(error);
+			Date.find({_author: req.body._author}, function(err, dates) {
+				if (err) {
+					reject(err);
 				} else {
 					resolve(dates);
 				}
@@ -148,22 +166,25 @@ DateController.prototype.updateDate = function(req, res) {
 					$set: {totalScore: totalScore}
 				}, {
 					new: true
-				}, function(error, user) {
-					if (error) {
-						reject(error);
+				}, function(er, user) {
+					if (er) {
+						reject(er);
 					} else {
 						resolve(user);
 					}
 				});
 			}).then(function(user) {
 				res.status(200).json(user)
-			}).catch(function(error) {
-				res.status(500).json(error);
+			}).catch(function(er) {
+				console.log(er)
+				res.status(500).json(er);
 			});
-		}).catch(function(error) {
-			res.status(500).json(error);
+		}).catch(function(err) {
+			console.log(err);
+			res.status(500).json(err);
 		});
 	}).catch(function(error) {
+		console.log(error);
 		res.status(500).json(error);
 	});
 };
@@ -181,10 +202,9 @@ DateController.prototype.deleteDate = function(req, res) {
 		});
 	}).then(function(date) {
 		return new Promise(function(resolve, reject) {
-			Date.find({_author: req.body._author}, function(error, dates) {
-				if (error) {
-					console.log(error);
-					reject(error);
+			Date.find({_author: req.body._author}, function(err, dates) {
+				if (err) {
+					reject(err);
 				} else {
 					resolve(dates);
 				}
@@ -201,22 +221,25 @@ DateController.prototype.deleteDate = function(req, res) {
 					$set: {totalScore: totalScore}
 				}, {
 					new: true
-				}, function(error, user) {
-					if (error) {
-						reject(error);
+				}, function(er, user) {
+					if (er) {
+						reject(er);
 					} else {
 						resolve(user);
 					}
 				});
 			}).then(function(user) {
 				res.status(200).json(user)
-			}).catch(function(error) {
-				res.status(500).json(error);
+			}).catch(function(er) {
+				console.log(er);
+				res.status(500).json(er);
 			});
-		}).catch(function(error) {
-			res.status(501).json(error);
+		}).catch(function(err) {
+			console.log(err);
+			res.status(501).json(err);
 		});
 	}).catch(function(error) {
+		console.log(error);
 		res.status(500).json(error);
 	});
 };

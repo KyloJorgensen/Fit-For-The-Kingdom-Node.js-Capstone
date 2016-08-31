@@ -1,7 +1,8 @@
 'use strict';
 
-var Data = function(self) {
+var Model = function(self) {
 	var that = this;
+	var password = '';
 
 	this.getUsers = function() {
 		$.ajax({
@@ -27,19 +28,10 @@ var Data = function(self) {
 		    contentType: 'application/json',
 		    url: '/user'
 		}).done(function(user) {
+			console.log(user);
 	    	self.login(user);
-	    }).fail(function(error){
-	        console.log(error);
-	    });
-	};
-
-	this.getUser = function(userId) {
-		$.ajax({
-		    type: 'GET',
-		    contentType: 'application/json',
-		    url: '/user/' + userId 
-		}).done(function(user) {
-	    	self.generateUser(user);
+	    	self.password = password;
+	    	console.log(password);
 	    }).fail(function(error){
 	        console.log(error);
 	    });
@@ -61,6 +53,7 @@ var Data = function(self) {
 		var data = {};
 		data.userId = userId;
 		data.date = date;
+		data.password = that.password;
 		$.ajax({
 		    type: 'POST',
 		    data: JSON.stringify(data),
@@ -113,7 +106,6 @@ var Data = function(self) {
 		    contentType: 'application/json',
 		    url: '/date'
 		}).done(function(user) {
-			console.log(user);
 			self.generateUser(user);
 	    }).fail(function(error){
 	        console.log(error);
@@ -124,7 +116,6 @@ var Data = function(self) {
 		var data = {};
 		data.username = username;
 		data.password = password;
-		console.log(data);
 
 		$.ajax({
 		    type: 'POST',
@@ -132,22 +123,37 @@ var Data = function(self) {
 		    contentType: 'application/json',
 		    url: '/login'
 		}).done(function(user) {
-			console.log(user);
 	    	self.login(user);
+	    	that.password = password;
 	    }).fail(function(error){
 	        console.log(error);
 	    });
 	};
+
+	this.getUser = function(userId) {
+		var data = {};
+		data.password = that.password;
+		$.ajax({
+			type: 'GET',
+			data: JSON.stringify(data),
+			contentType: 'application/json',
+			url: '/user/' + userId
+		}).done(function(user) {
+			self.generateUser(user);
+		}).fail(function(error) {
+			console.log(error);
+		});
+	};
 };
 
-var ViewModel = function(Data) {
+var ViewModel = function(Model) {
 	var self = this,
-		data = new Data(self);
+		model = new Model(self);
 
 	this.users = ko.observableArray([]); 
 
 	this.getUsers = function() {
-		data.getUsers();
+		model.getUsers();
 	};
 
 	this.updateUsers = function(users) {
@@ -221,20 +227,21 @@ var ViewModel = function(Data) {
 			return alert('Passwords are no the same.');
 		}
 
-		data.createUser(self.newUserName(), self.newUserUsername(), self.newUserPassword());
+		model.createUser(self.newUserName(), self.newUserUsername(), self.newUserPassword());
 	};
 
 	this.currentUser = ko.observableArray([]);
 	this.currentDates = ko.observableArray([]);
 
-	this.getUser = function(user) {
-		data.getUser(user._id);
+	this.getUser = function() {
+		console.log(self.currentUser()[0]);
+		model.getUser(self.currentUser()[0]._id);
 	};
 
 	this.generateUser = function(user) {
 		self.currentUser.splice(0, self.currentUser().length);
 		self.currentUser.push(user);
-		data.getUserDates(user);
+		model.getUserDates(user);
 		self.showUser();
 	};
 
@@ -251,7 +258,7 @@ var ViewModel = function(Data) {
 	};
 
 	this.deleteUser = function() {
-		data.deleteUser(self.currentUser()[0]._id);
+		model.deleteUser(self.currentUser()[0]._id);
 	};
 
 	this.currentUserDate = ko.observableArray([]);
@@ -284,13 +291,13 @@ var ViewModel = function(Data) {
 	};
 
 	this.addNewUserDate = function() {
-		data.createDate(self.currentUser()[0]._id, self.newUserDate());
+		model.createDate(self.currentUser()[0]._id, self.newUserDate());
 	};
 
 	this.deleteUserDate = function() {
 		var date = self.currentUserDate()[0];
 
-		data.deleteUserDate(date._author, date._id);
+		model.deleteUserDate(date._author, date._id);
 	};
 
 	this.validateDateInputs = function() {
@@ -331,7 +338,7 @@ var ViewModel = function(Data) {
 			alert('sugar needs to be true or false');
 			return;
 		}
-		data.updateDate(self.currentUserDate()[0]);
+		model.updateDate(self.currentUserDate()[0]);
 	};
 
 	this.clickedSugar = function() {
@@ -361,7 +368,6 @@ var ViewModel = function(Data) {
 
 	this.validatelogin = function() {
 		event.preventDefault();
-		console.log(self.userName(), self.userPassword());
 
 		if (!self.userName()) {
 			return alert('User Name Required');
@@ -371,11 +377,10 @@ var ViewModel = function(Data) {
 			return alert('Password Required');
 		}
 
-		data.validatelogin(self.userName(), self.userPassword());
+		model.validatelogin(self.userName(), self.userPassword());
 	};
 
 	this.login = function(user) {
-		console.log(user);
 		self.generateUser(user);
 		$('.loggedIn').show();
 		$('.loggedOut').hide();
@@ -397,7 +402,7 @@ var ViewModel = function(Data) {
 		$('.loggedOut').show();
 	};
 
-	data.getUsers(true);
+	model.getUsers(true);
 };
 
-ko.applyBindings(new ViewModel(Data));
+ko.applyBindings(new ViewModel(Model));
