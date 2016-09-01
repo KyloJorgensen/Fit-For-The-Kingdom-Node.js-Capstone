@@ -79,7 +79,11 @@ var Model = function(self) {
 		}).done(function(user) {
 	    	self.login(user);
 	    }).fail(function(error){
-	        console.log(error);
+	    	if (error.code == 11000) {
+	    		alert('Username already taken');
+	    	} else {
+	    		console.log(error);
+	    	}
 	        that.user = {};
 	    });
 	};
