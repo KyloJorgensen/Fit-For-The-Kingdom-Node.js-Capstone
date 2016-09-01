@@ -45,7 +45,11 @@ UserController.prototype.getUser = function(req, res) {
             }
         });
     }).then(function(user) {
-        res.status(200).json(user);
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(400).end();
+        }
     }).catch(function(error) {
         console.log(error);
         res.status(404).json(error);
@@ -165,7 +169,7 @@ UserController.prototype.deleteUser = function(req, res) {
                 }
             });
         }).then(function(user) {
-            res.status(200).json(user);
+            res.status(200).json({message: 'delete ' + user.username});
         }).catch(function(error) {
             console.log(error);
             res.status(400).json(error);

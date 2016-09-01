@@ -35,7 +35,11 @@ DateController.prototype.getDate = function(req, res) {
 			}
 		});
 	}).then(function(date) {
-		res.status(200).json(date);
+		if (date) {
+			res.status(200).json(date);
+		} else {
+			res.status(400).end();
+		}
 	}).catch(function(error) {
 		console.log(error);
 		res.status(400).json(error);
@@ -144,7 +148,7 @@ DateController.prototype.updateDate = function(req, res) {
 			});
 		}).then(function(date) {
 			Utility.updateUserTotalScore(req, res, date._author, function(user) {
-				res.status(200).json(user)
+				res.status(200).json(user);
 			});
 		}).catch(function(error) {
 			console.log(error);
