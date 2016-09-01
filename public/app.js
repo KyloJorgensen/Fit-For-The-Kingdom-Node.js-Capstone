@@ -4,6 +4,7 @@ var Model = function(self) {
 	var that = this;
 	this.user = {};
 
+	// Gets array of public Users
 	this.getUsers = function() {
 		$.ajax({
 	        url: '/user',
@@ -16,6 +17,34 @@ var Model = function(self) {
 	    });
 	};
 
+	// Gets user object
+	this.getUser = function(userId) {
+		$.ajax({
+			type: 'GET',
+			contentType: 'application/json',
+			url: '/user/' + userId
+		}).done(function(user) {
+			self.generateUser(user);
+		}).fail(function(error) {
+			console.log(error);
+		});
+	};
+
+	// gets array of users' dates
+	this.getUserDates = function(user) {
+		$.ajax({
+		    type: 'GET',
+		    contentType: 'application/json',
+		    url: '/date/users/' + user._id
+		}).done(function(date) {
+	    	self.generateUserDates(date);
+	    }).fail(function(error){
+	        console.log(error);
+	    });
+	};
+
+	// Creates A user
+	// needs name, username and password for the new user
 	this.createUser = function(name, username, password) {
 		var data = {};
 		data.name = name;
@@ -32,21 +61,61 @@ var Model = function(self) {
 	    	self.login(user);
 	    }).fail(function(error){
 	        console.log(error);
+	        that.user = {};
 	    });
 	};
 
-	this.getUserDates = function(user) {
+	// post a login attempt
+	this.validateLogin = function(username, password) {
+		that.user = {username: username, password: password};
+		var data = {};
+		data.user = that.user;
+
 		$.ajax({
-		    type: 'GET',
+		    type: 'POST',
+		    data: JSON.stringify(data),
 		    contentType: 'application/json',
-		    url: '/date/users/' + user._id
-		}).done(function(date) {
-	    	self.generateUserDates(date);
+		    url: '/login'
+		}).done(function(user) {
+	    	self.login(user);
+	    }).fail(function(error){
+	        console.log(error);
+	        that.user = {};
+	    });
+	};
+
+	// makes a request to change a user public status
+	this.updateUserPublicStatus = function(publicStatus) {
+		var data = {};
+		data.user = that.user;
+		data.publicStatus = publicStatus;
+
+		$.ajax({
+		    type: 'PUT',
+		    data: JSON.stringify(data),
+		    contentType: 'application/json',
+		    url: '/user/publicStatus'
+		}).done(function(user) {
+	    	self.generateUser(user);
 	    }).fail(function(error){
 	        console.log(error);
 	    });
 	};
 
+	// gets date by dateId 
+	this.getDate = function(dateId) {
+		$.ajax({
+		    type: 'GET',
+		    contentType: 'application/json',
+		    url: '/date/date/' + dateId
+		}).done(function(date) {
+	    	self.generateEditDate(date);
+	    }).fail(function(error){
+	        console.log(error);
+	    });
+	};
+
+	// posts a request to create a new date
 	this.createDate = function(date) {
 		var data = {};
 		data.date = date;
@@ -67,6 +136,7 @@ var Model = function(self) {
 	    });
 	};
 
+	// puts a request to update a date
 	this.updateDate = function(date) {
 		var data = {};
 		data.date = date;
@@ -83,19 +153,8 @@ var Model = function(self) {
 	    });
 	};
 
-	this.deleteUser = function(userId) {
-		$.ajax({
-		    type: 'DELETE',
-		    contentType: 'application/json',
-		    url: '/user/' + userId
-		}).done(function(users) {
-	    	that.getUsers();
-	    }).fail(function(error){
-	        console.log(error);
-	    });
-	};
-
-	this.deleteUserDate = function(userId, dateId) {
+	// delete request of date by dateId
+	this.deleteUserDate = function(dateId) {
 		var data = {};
 		data.dateId = dateId;
 		data.user = that.user;
@@ -111,53 +170,6 @@ var Model = function(self) {
 	        console.log(error);
 	    });
 	};
-
-	this.validatelogin = function(username, password) {
-		var data = {};
-		data.username = username;
-		data.password = password;
-
-		$.ajax({
-		    type: 'POST',
-		    data: JSON.stringify(data),
-		    contentType: 'application/json',
-		    url: '/login'
-		}).done(function(user) {
-	    	that.user = {username: username, password: password};
-	    	self.login(user);
-	    }).fail(function(error){
-	        console.log(error);
-	    });
-	};
-
-	this.getUser = function(userId) {
-		$.ajax({
-			type: 'GET',
-			contentType: 'application/json',
-			url: '/user/' + userId
-		}).done(function(user) {
-			self.generateUser(user);
-		}).fail(function(error) {
-			console.log(error);
-		});
-	};
-
-	this.updateUserPublicStatus = function(publicStatus) {
-		var data = {};
-		data.user = that.user;
-		data.publicStatus = publicStatus;
-
-		$.ajax({
-		    type: 'PUT',
-		    data: JSON.stringify(data),
-		    contentType: 'application/json',
-		    url: '/user/publicStatus'
-		}).done(function(user) {
-	    	self.generateUser(user);
-	    }).fail(function(error){
-	        console.log(error);
-	    });
-	};
 };
 
 var ViewModel = function(Model) {
@@ -166,25 +178,29 @@ var ViewModel = function(Model) {
 
 	this.users = ko.observableArray([]); 
 
+	// calls users from model
 	this.getUsers = function() {
 		model.getUsers();
 	};
 
+	// takes array of users and diplays them
 	this.updateUsers = function(users) {
 		self.users.splice(0, self.users().length);
 		for (var i = 0; i < users.length; i++) {
 			self.users.push(users[i]);
 		}
-		self.updatewinnerStand();
+		self.generateWinnerStand();
 		self.hideAllInMain();
 		$('.users').show();
 	};
 
 	this.winnerstand = ko.observableArray([]);
 
-	this.updatewinnerStand = function() {
+	// generates the winners stand
+	this.generateWinnerStand = function() {
 		var winnerstand = [	{name: 'none', score: 0}, {name: 'none', score: 0}, {name: 'none', score: 0}];
 		for (var i = 0; i < self.users().length; i++) {
+			// finds the top score
 			if (self.users()[i].totalScore >= winnerstand[0].score) {
 				winnerstand[2].name = winnerstand[1].name;
 				winnerstand[2].score = winnerstand[1].score;
@@ -192,11 +208,13 @@ var ViewModel = function(Model) {
 				winnerstand[1].score = winnerstand[0].score;
 				winnerstand[0].name = self.users()[i].name;
 				winnerstand[0].score = self.users()[i].totalScore;
+			// finds the second top score 
 			} else if (self.users()[i].totalScore >= winnerstand[1].score) {
 				winnerstand[2].name = winnerstand[1].name;
 				winnerstand[2].score = winnerstand[1].score;
 				winnerstand[1].name = self.users()[i].name;
 				winnerstand[1].score = self.users()[i].totalScore;
+			// finds the third top score 
 			} else if (self.users()[i].totalScore >= winnerstand[2].score) {
 				winnerstand[2].name = self.users()[i].name;
 				winnerstand[2].score = self.users()[i].totalScore;
@@ -209,13 +227,62 @@ var ViewModel = function(Model) {
 		}
 	};
 
+	// hides all in main so disired content they can be displayed
 	this.hideAllInMain = function() {
 		$('.toggle').hide();
 	};
 
-	this.newUser = function() {
+	this.currentUser = ko.observableArray([]);
+	this.currentDates = ko.observableArray([]);
+
+	// calls for Current User
+	this.getUser = function() {
+		model.getUser(self.currentUser()[0]._id);
+	};
+
+	// generates user
+	this.generateUser = function(user) {
+		self.currentUser.splice(0, self.currentUser().length);
+		self.currentUser.push(user);
+		self.updatePublicStatusDisplay(user.publicStatus);
+		model.getUserDates(user);
+		self.showUser();
+	};
+
+	// calls for a public status update oppsite of current status
+	this.publicStatusClicked = function(user) {
+		model.updateUserPublicStatus(!user.publicStatus);
+	};
+
+	this.publicStatusDisplay = ko.observable('Public');
+
+	// updates the users public status display
+	this.updatePublicStatusDisplay = function(publicStatus) {
+		if (publicStatus) {
+			self.publicStatusDisplay('Public');
+		} else {
+			self.publicStatusDisplay('Private');
+		}
+	};
+
+	// displays current user
+	this.showUser = function() {
 		self.hideAllInMain();
-		$('.newUser').show();
+		$('.user').show();
+	};
+
+	// displays array of users' dates 
+	this.generateUserDates = function(dates) {
+		self.currentDates.splice(0, self.currentDates().length);
+		for (var i = 0; i < dates.length; i++) {
+			self.currentDates.push(dates[i]);
+		}
+	};
+
+	// displays sign up form
+	this.showSignUp = function() {
+		self.hideAllInMain();
+		$('.signUp').show();
 	};
 
 	this.newUserName = ko.observable();
@@ -223,6 +290,7 @@ var ViewModel = function(Model) {
 	this.newUserPassword = ko.observable();
 	this.newUserVerifyPassword = ko.observable();
 
+	// validates the new user fields have content
 	this.validateNewUser = function() {
 		event.preventDefault();
 		if (!self.newUserName()) {
@@ -244,47 +312,68 @@ var ViewModel = function(Model) {
 		model.createUser(self.newUserName(), self.newUserUsername(), self.newUserPassword());
 	};
 
-	this.currentUser = ko.observableArray([]);
-	this.currentDates = ko.observableArray([]);
+	this.userUsername = ko.observable('');
+	this.userPassword = ko.observable('');
 
-	this.getUser = function() {
-		model.getUser(self.currentUser()[0]._id);
-	};
+	// validate user name and password fields are filled
+	this.validateLogin = function() {
+		event.preventDefault();
 
-	this.generateUser = function(user) {
-		self.currentUser.splice(0, self.currentUser().length);
-		self.currentUser.push(user);
-		self.updatePublicStatusDisplay(user.publicStatus);
-		model.getUserDates(user);
-		self.showUser();
-	};
-
-	this.showUser = function() {
-		self.hideAllInMain();
-		$('.user').show();
-	};
-
-	this.generateUserDates = function(dates) {
-		self.currentDates.splice(0, self.currentDates().length);
-		for (var i = 0; i < dates.length; i++) {
-			self.currentDates.push(dates[i]);
+		if (!self.userUsername()) {
+			return alert('Username Required');
 		}
+
+		if (!self.userPassword()) {
+			return alert('Password Required');
+		}
+
+		model.validateLogin(self.userUsername(), self.userPassword());
 	};
 
-	this.deleteUser = function() {
-		model.deleteUser(self.currentUser()[0]._id);
+	// dispalys logged in user
+	this.login = function(user) {
+		self.generateUser(user);
+		$('.loggedIn').show();
+		$('.loggedOut').hide();
+	};
+
+	// logs user out
+	this.logout = function() {
+		model.user = {};
+		self.currentUser([]);
+		self.getUsers();
+		self.showLogout();
+	};
+
+	// show login form
+	this.showLogin = function() {
+		$('.toggle').hide();
+		$('.login').show();
+	};
+
+	// displays logged out
+	this.showLogout = function() {
+		$('.loggedIn').hide();
+		$('.loggedOut').show();
 	};
 
 	this.currentUserDate = ko.observableArray([]);
 	this.date = ko.observable('11/11/2011');
 
-	this.editDate = function(user) {
+	// requests date
+	this.editDate = function(date) {
+		model.getDate(date._id);
+	};
+
+	// displays date to edited
+	this.generateEditDate = function(date) {
 		self.hideAllInMain();
 		$('.userDate').show();
 		self.currentUserDate.splice(0, self.currentUserDate().length);
-		self.currentUserDate.push(user);
+		self.currentUserDate.push(date);
 	};
 
+	// returns current date
 	this.formattedDate = function() {
 	    var d = new Date(Date.now()),
 	        month = '' + (d.getMonth() + 1),
@@ -299,21 +388,28 @@ var ViewModel = function(Model) {
 
 	this.newUserDate = ko.observable(self.formattedDate());
 
-	this.veiwAddNewUserDate = function() {
+	// shows add new date
+	this.showAddDate = function() {
 		self.hideAllInMain();
 		$('.newUserDate').show();
 	};
 
-	this.addNewUserDate = function() {
-		model.createDate(self.newUserDate());
+	// validate that new date field is good
+	this.validateDate = function() {
+		if (self.newUserDate()) {
+			model.createDate(self.newUserDate());
+		} else {
+			alert('Need Month, Day, and Year (mm/dd/yyyy).')
+		}
 	};
 
+	// request to delete date
 	this.deleteUserDate = function() {
 		var date = self.currentUserDate()[0];
-
-		model.deleteUserDate(date._author, date._id);
+		model.deleteUserDate(date._id);
 	};
 
+	// validate and edit fields are corect
 	this.validateDateInputs = function() {
 		event.preventDefault();
 
@@ -355,82 +451,23 @@ var ViewModel = function(Model) {
 		model.updateDate(self.currentUserDate()[0]);
 	};
 
+	// changes to sugar button from true to false and vis versa when clicked
 	this.clickedSugar = function() {
 		var currentDate = self.currentUserDate()[0];
-		if (currentDate.sugar) {
-			currentDate.sugar = false;
-		} else {
-			currentDate.sugar = true;
-		}
+		currentDate.sugar = !currentDate.sugar;
 		self.currentUserDate.splice(0, self.currentUser().length);
 		self.currentUserDate.push(currentDate);
 	};
 	
+	// changes to soda button from true to false and vis versa when clicked
 	this.clickedSoda = function() {
 		var currentDate = self.currentUserDate()[0];
-		if (currentDate.soda) {
-			currentDate.soda = false;
-		} else {
-			currentDate.soda = true;
-		}
+		currentDate.soda = !currentDate.soda;
 		self.currentUserDate.splice(0, self.currentUser().length);
 		self.currentUserDate.push(currentDate);
 	};
 
-	this.userName = ko.observable('');
-	this.userPassword = ko.observable('');
-
-	this.validatelogin = function() {
-		event.preventDefault();
-
-		if (!self.userName()) {
-			return alert('User Name Required');
-		}
-
-		if (!self.userPassword()) {
-			return alert('Password Required');
-		}
-
-		model.validatelogin(self.userName(), self.userPassword());
-	};
-
-	this.login = function(user) {
-		self.generateUser(user);
-		$('.loggedIn').show();
-		$('.loggedOut').hide();
-	};
-
-	this.logout = function() {
-		model.user = {};
-		self.currentUser([]);
-		self.getUsers();
-		self.showLogout();
-	};
-
-	this.showLogin = function() {
-		$('.toggle').hide();
-		$('.login').show();
-	};
-
-	this.showLogout = function() {
-		$('.loggedIn').hide();
-		$('.loggedOut').show();
-	};
-
-	this.publicStatusClicked = function(user) {
-		model.updateUserPublicStatus(!user.publicStatus);
-	};
-
-	this.publicStatusDisplay = ko.observable('Public');
-
-	this.updatePublicStatusDisplay = function(publicStatus) {
-		if (publicStatus) {
-			self.publicStatusDisplay('Public');
-		} else {
-			self.publicStatusDisplay('Private');
-		}
-	};
-
+	// when page loads calls for content to display
 	model.getUsers(true);
 };
 

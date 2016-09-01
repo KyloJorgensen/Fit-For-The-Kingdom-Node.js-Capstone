@@ -6,6 +6,7 @@ var User = require('../user/user.model'),
 
 function DateController() {};
 
+// get dates by userId and returns them to client
 DateController.prototype.getUserDates = function(req, res) {
 	return new Promise(function(resolve, reject) {
 		Date.find({_author: req.params.userId}, function(error, dates) {
@@ -19,10 +20,11 @@ DateController.prototype.getUserDates = function(req, res) {
 		res.status(200).json(dates);
 	}).catch(function(error) {
 		console.log(error);
-		res.status(500).json(error);
+		res.status(400).json(error);
 	});
 };
 
+// get date by dateId and returns it to client
 DateController.prototype.getDate = function(req, res) {
 	return new Promise(function(resolve, reject) {
 		Date.findOne({_id: req.params.dateId}, function(error, date) {
@@ -36,10 +38,11 @@ DateController.prototype.getDate = function(req, res) {
 		res.status(200).json(date);
 	}).catch(function(error) {
 		console.log(error);
-		res.status(500).json(error);
+		res.status(400).json(error);
 	});
 };
 
+// creates a new date for a user
 DateController.prototype.createDate = function(req, res) {
 	Utility.validateLoggedIn(req, res, function(user) {
 		return new Promise(function(resolve, reject) {
@@ -53,6 +56,7 @@ DateController.prototype.createDate = function(req, res) {
 				}
 			});
 		}).then(function(dates) {
+			// checks if date is already being used by that user
 			for (var i = 0; i < dates.length; i++) {
 				if (dates[i].date == req.body.date) {
 					return res.status(400).json({message: 'This date had already exsites.'});
@@ -69,6 +73,7 @@ DateController.prototype.createDate = function(req, res) {
 				    satisfied: 0,
 				    score: 0
 		    	};
+		    	// creates date
 		    	Date.create(date, function(err, date) {
 		            if (err) {
 		           		reject(err);
@@ -89,6 +94,7 @@ DateController.prototype.createDate = function(req, res) {
 	});
 };
 
+// updates date and returns new user
 DateController.prototype.updateDate = function(req, res) {
 	Utility.validateLoggedIn(req, res, function(user) {
 		return new Promise(function(resolve, reject) {
@@ -147,6 +153,7 @@ DateController.prototype.updateDate = function(req, res) {
 	});
 };
 
+// delete date and returns new user
 DateController.prototype.deleteDate = function(req, res) {
 	Utility.validateLoggedIn(req, res, function(user) {
 		return new Promise(function(resolve, reject) {

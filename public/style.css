@@ -126,7 +126,6 @@ footer {
 }
 
 @media screen and (max-width: 1300px) {
-
 	.user-small-screen {
 		display: none !important;
 	}
@@ -138,7 +137,6 @@ footer {
 }
 
 @media screen and (max-width: 1150px) {
-
 	.user-menu * {
 		display: block;
 		width: 100%;
@@ -153,7 +151,6 @@ footer {
 }
 
 @media screen and (max-width: 520px) {
-
 	nav {
 		height: 7.5rem;
 	}
@@ -161,18 +158,15 @@ footer {
 	.container {
 		margin-top: 54px;
 	}
-
 }
 
 @media screen and (max-width: 460px) {
-	
 	.container {
 		width: 260px;
 	}
 }
 
 @media screen and (max-width: 350px) {
-	
 	nav {
 		width: 320px;
 	}

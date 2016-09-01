@@ -5,6 +5,7 @@ var User = require('../user/user.model'),
 
 function UtilityFunctions() {};
 
+// vailodates that user name and password are correct returns callback on success
 UtilityFunctions.prototype.validateLoggedIn = function(req, res, callback) {
 	return new Promise(function(resolve, reject) {
         User.findOne({
@@ -20,22 +21,23 @@ UtilityFunctions.prototype.validateLoggedIn = function(req, res, callback) {
         user.validatePassword(req.body.user.password, function(err, isVaild) {
             if (err) {
                 console.log(err);
-                res.status(300).json(err);
+                res.status(500).json(err);
             } else {
                 if (isVaild) {
                     callback(user);
                 } else {
                     console.log('Invald user');
-                    res.status(300).json({message: 'user is not logged in.'});
+                    res.status(400).json({message: 'user is not logged in.'});
                 }
             }
         });
     }).catch(function(error) {
         console.log(error);
-        res.status(500).json(error);
+        res.status(400).json(error);
     });
 };
 
+// updates totalscore on user returns new user
 UtilityFunctions.prototype.updateUserTotalScore = function(req, res, userId, callback) {
     return new Promise(function(resolve, reject) {
         Date.find({_author: userId}, function(error, dates) {

@@ -12,7 +12,7 @@
 		<div class="nav-menu">
 			<button data-bind="click: getUsers">MAIN</button>
 			<button class="loggedOut" data-bind="click: showLogin">LOGIN</button>
-			<button class="loggedOut" data-bind="click: newUser">SIGN UP</button>
+			<button class="loggedOut" data-bind="click: showSignUp">SIGN UP</button>
 			<button class="loggedIn" data-bind="click: getUser">PROFILE</button>
 			<button class="loggedIn" data-bind="click: logout">LOGOUT</button>
 		</div>
@@ -23,9 +23,9 @@
 		<div class="container">
 			
 			<div class="login toggle">
-				<form data-bind="submit: validatelogin">
+				<form data-bind="submit: validateLogin">
 					<h2>LOGIN</h2>
-					<p>User Name: <input type="text" data-bind="value: userName" /></p>
+					<p>Username: <input type="text" data-bind="value: userUsername" /></p>
 					<p>Password: <input type="text" data-bind="value: userPassword" /></p>
 					<input type="submit" value="LOGIN" />
 				</form>
@@ -58,7 +58,7 @@
 				</div>
 			</div>
 			<!-- Users -->
-			<div class="newUser toggle">
+			<div class="signUp toggle">
 				<h1>SIGN UP</h1>
 				<form data-bind="submit: validateNewUser">
 				    <p>Name: <input placeholder="Name" data-bind="value: newUserName" /><p>
@@ -73,9 +73,8 @@
 				<div class="user-menu">
 					<p data-bind="text: name"></p>
 					<p>Total Score : <span data-bind="text: totalScore"></span></p>
-					<input type="button" data-bind="click: $root.veiwAddNewUserDate" value="New Date"/>
+					<input type="button" data-bind="click: $root.showAddDate" value="New Date"/>
 					<input type="button" data-bind="click: $root.publicStatusClicked, value: $root.publicStatusDisplay" />
-					<button class="admin deleteUserButton" data-bind="click: $root.deleteUser">Delete User</button>					
 				</div>
 				<div class="user-header">
 					<p>Date</p>
@@ -127,7 +126,7 @@
 				</div>
 				<p>New Date</p>
 				<input type="date" data-bind="value: newUserDate">
-				<button data-bind="click: addNewUserDate">ADD</button>
+				<button data-bind="click: validateDate">ADD</button>
 			</div>
 		</div>
 		<!-- container -->
