@@ -21,7 +21,6 @@
 
 	<main>
 		<div class="container">
-			
 			<div class="login toggle">
 				<form data-bind="submit: validateLogin">
 					<h2>LOGIN</h2>
@@ -32,6 +31,10 @@
 			</div>
 			<!-- Login -->
 			<div class="users toggle">
+				<div>
+					<h1>Welcome!!</h1>
+					<h3>A healthy habit tracking website. Join us in our little competiton. </h3>
+				</div>
 				<div class="users-table">
 					<div class="users-names">
 						<p>Names</p>
@@ -96,7 +99,10 @@
 						<p data-bind="text: score"></p>
 						<button data-bind="click: $root.editDate">EDIT</button>
 					</li>
-				</ul>											
+				</ul>
+				<div>
+					<p>This is your Profile. You can add daily entries by clicking on New Date. Clicking on the Public button will change hide your Profile on the main page. Clicking Private will reverse the effect.</p>
+				</div>											
 			</div>
 			<!-- User -->
 			<div class="userDate toggle">
@@ -107,16 +113,19 @@
 								<p data-bind="foreach: currentUser">User: <span id="name" data-bind="text: name"></span></p>
 							</div>
 							<p>Date: <span id="date" data-bind="text: date" ></span></p>
-							<p>Exercise: <input id="exercise" data-bind="value: exercise" disabled /> <input type="button" data-bind="click: $root.addOne('exercise')" value="+" /> <input type="button" data-bind="click: $root.minusOne('exercise')" value="-" /> (+1 for every 10mins)</p>
-							<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" disabled /> <input type="button" data-bind="click: $root.addOne('healthyChoice')" value="+" /> <input type="button" data-bind="click: $root.minusOne('healthyChoice')" value="-" /> (number of healther choices made)</p>
-							<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" disabled /> <input type="button" data-bind="click: $root.addOne('satisfied')" value="+" /> <input type="button" data-bind="click: $root.minusOne('satisfied')" value="-" />(0-3 meals eatten until satisfied)</p>
-							<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedBoolean('soda')" />(true or false)</p>
-							<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedBoolean('sugar')" />(true or false)</p>
+							<p>Exercise: <input id="exercise" data-bind="value: exercise" disabled /> <input type="button" data-bind="click: $root.addOne('exercise')" value="+" /> <input type="button" data-bind="click: $root.minusOne('exercise')" value="-" /> (+1 for every 10mins of exercise)</p>
+							<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" disabled /> <input type="button" data-bind="click: $root.addOne('healthyChoice')" value="+" /> <input type="button" data-bind="click: $root.minusOne('healthyChoice')" value="-" /> (number of healther choices you made)</p>
+							<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" disabled /> <input type="button" data-bind="click: $root.addOne('satisfied')" value="+" /> <input type="button" data-bind="click: $root.minusOne('satisfied')" value="-" />( number of meals eatten until satisfied)</p>
+							<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedBoolean('soda')" />(true if you did not drinks soda or false if you did)</p>
+							<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedBoolean('sugar')" />(true if you did not consume sugar or false if you did)</p>
 							<button type="submit">SAVE</button>
 							<button class="userDate-button-delete" data-bind="click: $root.deleteUserDate">DELETE</button>
 						</form>
 					</li>
 				</ul>
+				<div>
+					<p>Your score will automatically be calculated :)</p>
+				</div>
 			</div>
 			<!-- userDate -->
 
