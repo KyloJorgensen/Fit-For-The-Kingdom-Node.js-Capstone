@@ -24,6 +24,7 @@ nav * {
 .nav-menu {
 	float: right;
 	padding: 1.3rem;
+	padding-right: 5px;
 }
 
 .nav-menu .loggedIn{
@@ -35,7 +36,7 @@ main {
 }
 
 main .container {
-	min-height: 250px;
+	min-height: 250px;	
 }
 
 .toggle {
@@ -66,6 +67,10 @@ main ul {
 	float: right;
 	width: 30%;
 	display: inline-block;
+}
+
+.users-winnerStand ol {
+	padding-left: 0;
 }
 
 .users-names {
@@ -115,10 +120,18 @@ footer {
 }
 
 .container {
-	width: 60%;
-    margin: 10px auto;
+	width: 80%;
     padding: 25px;
     background-color: white;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    /* left: 0; */
+    /* right: 0; */
+    margin-top: 60px;
+    margin-bottom: 20px; 
+    margin-right: 10%;
+    margin-left: 10%;
 }
 
 .admin {
@@ -149,6 +162,11 @@ footer {
 		display: inline;
 	}
 }
+@media screen and (max-width: 600px) {
+	.container {
+		margin-left: 5%;
+	}
+}
 
 @media screen and (max-width: 520px) {
 	nav {
@@ -156,18 +174,23 @@ footer {
 	}
 	
 	.container {
-		margin-top: 54px;
+		margin-top: 115px;
 	}
 }
 
 @media screen and (max-width: 460px) {
 	.container {
+		margin-top: 115px;
 		width: 260px;
 	}
 }
 
 @media screen and (max-width: 350px) {
 	nav {
-		width: 320px;
+		width: 350px;
+	}
+
+	.conatiner {
+		margin-left: 0;
 	}
 }

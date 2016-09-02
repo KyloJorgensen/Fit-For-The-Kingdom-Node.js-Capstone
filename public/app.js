@@ -377,12 +377,52 @@ var ViewModel = function(Model) {
 		model.getDate(date._id);
 	};
 
+	var dateGenerated = false;
 	// displays date to edited
 	this.generateEditDate = function(date) {
 		self.hideAllInMain();
 		$('.userDate').show();
+		self.updateCurrentDate(date);
+	};
+
+	this.date = {};
+
+	this.updateCurrentDate = function(date, property, value) {
+		if (date != null) {
+			self.date = date;
+		} else {
+			self.date[property] = value;
+		}
+		dateGenerated = false;
 		self.currentUserDate.splice(0, self.currentUserDate().length);
-		self.currentUserDate.push(date);
+		self.currentUserDate.push(self.date);
+		dateGenerated = true;
+	};
+
+
+	// method to add increase numbers in edit date
+	this.addOne = function(property) {
+		if (dateGenerated) {
+			var value = self.date[property] + 1;
+			self.updateCurrentDate(null, property, value);
+		}
+	};
+
+	// method to add increase numbers in edit date
+	this.minusOne = function(property) {
+		if (dateGenerated) {
+			var value = self.date[property] - 1;
+			self.updateCurrentDate(null, property, value);
+		}
+	};
+
+
+	// changes to Boolean button from true to false and vis versa when clicked
+	this.clickedBoolean = function(property) {
+		if (dateGenerated) {
+			var value = !self.date[property];
+			self.updateCurrentDate(null, property, value);
+		}
 	};
 
 	// returns current date
@@ -409,7 +449,8 @@ var ViewModel = function(Model) {
 	// validate that new date field is good
 	this.validateDate = function() {
 		if (self.newUserDate()) {
-			model.createDate(self.newUserDate());
+			var date = self.newUserDate().split('-');
+			model.createDate(date[1] + '/' + date[2] + '/' + date[0]);
 		} else {
 			alert('Need Month, Day, and Year (mm/dd/yyyy).')
 		}
@@ -461,22 +502,6 @@ var ViewModel = function(Model) {
 			return;
 		}
 		model.updateDate(self.currentUserDate()[0]);
-	};
-
-	// changes to sugar button from true to false and vis versa when clicked
-	this.clickedSugar = function() {
-		var currentDate = self.currentUserDate()[0];
-		currentDate.sugar = !currentDate.sugar;
-		self.currentUserDate.splice(0, self.currentUser().length);
-		self.currentUserDate.push(currentDate);
-	};
-	
-	// changes to soda button from true to false and vis versa when clicked
-	this.clickedSoda = function() {
-		var currentDate = self.currentUserDate()[0];
-		currentDate.soda = !currentDate.soda;
-		self.currentUserDate.splice(0, self.currentUser().length);
-		self.currentUserDate.push(currentDate);
 	};
 
 	// when page loads calls for content to display

@@ -107,11 +107,11 @@
 								<p data-bind="foreach: currentUser">User: <span id="name" data-bind="text: name"></span></p>
 							</div>
 							<p>Date: <span id="date" data-bind="text: date" ></span></p>
-							<p>Exercise: <input type="Number" min="0" id="exercise" data-bind="value: exercise" /> (+1 for every 10mins)</p>
-							<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" />(number)</p>
-							<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" />(0-3 meals eatten until satisfied)</p>
-							<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedSoda" />(true or false)</p>
-							<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedSugar" />(true or false)</p>
+							<p>Exercise: <input id="exercise" data-bind="value: exercise" disabled /> <input type="button" data-bind="click: $root.addOne('exercise')" value="+" /> <input type="button" data-bind="click: $root.minusOne('exercise')" value="-" /> (+1 for every 10mins)</p>
+							<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" disabled /> <input type="button" data-bind="click: $root.addOne('healthyChoice')" value="+" /> <input type="button" data-bind="click: $root.minusOne('healthyChoice')" value="-" /> (number of healther choices made)</p>
+							<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" disabled /> <input type="button" data-bind="click: $root.addOne('satisfied')" value="+" /> <input type="button" data-bind="click: $root.minusOne('satisfied')" value="-" />(0-3 meals eatten until satisfied)</p>
+							<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedBoolean('soda')" />(true or false)</p>
+							<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedBoolean('sugar')" />(true or false)</p>
 							<button type="submit">SAVE</button>
 							<button class="userDate-button-delete" data-bind="click: $root.deleteUserDate">DELETE</button>
 						</form>
