@@ -107,9 +107,9 @@
 								<p data-bind="foreach: currentUser">User: <span id="name" data-bind="text: name"></span></p>
 							</div>
 							<p>Date: <span id="date" data-bind="text: date" ></span></p>
-							<p>Exercise: <input type="number" min="0" pattern="[0-9]*" id="exercise" data-bind="value: exercise" /> (+1 for every 10mins)</p>
+							<p>Exercise: <input type="Number" min="0" id="exercise" data-bind="value: exercise" /> (+1 for every 10mins)</p>
 							<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" />(number)</p>
-							<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" />(0-3)</p>
+							<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" />(0-3 meals eatten until satisfied)</p>
 							<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedSoda" />(true or false)</p>
 							<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedSugar" />(true or false)</p>
 							<button type="submit">SAVE</button>
