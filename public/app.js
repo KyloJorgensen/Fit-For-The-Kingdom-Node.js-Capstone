@@ -61,6 +61,7 @@ var Model = function(self) {
 	    	self.login(user);
 	    }).fail(function(error){
 	        console.log(error);
+	        alert(error.responseText);
 	        that.user = {};
 	    });
 	};
@@ -79,6 +80,7 @@ var Model = function(self) {
 		}).done(function(user) {
 	    	self.login(user);
 	    }).fail(function(error){
+	    	alert(error.responseText);
 	    	if (error.code == 11000) {
 	    		alert('Username already taken');
 	    	} else {
@@ -309,8 +311,8 @@ var ViewModel = function(Model) {
 		if (!self.newUserVerifyPassword()) {
 			return alert('Missing field: Password');
 		}
-		if (self.newUserPassword() == self.newUserVerifyPassword) {
-			return alert('Passwords are no the same.');
+		if (!(self.newUserPassword() == self.newUserVerifyPassword())) {
+			return alert('Passwords are not the same.');
 		}
 
 		model.createUser(self.newUserName(), self.newUserUsername(), self.newUserPassword());
@@ -337,6 +339,12 @@ var ViewModel = function(Model) {
 	// dispalys logged in user
 	this.login = function(user) {
 		self.generateUser(user);
+		self.userUsername('');
+		self.userPassword('');
+		this.newUserName('');
+		this.newUserUsername('');
+		this.newUserPassword('');
+		this.newUserVerifyPassword('');
 		$('.loggedIn').show();
 		$('.loggedOut').hide();
 	};

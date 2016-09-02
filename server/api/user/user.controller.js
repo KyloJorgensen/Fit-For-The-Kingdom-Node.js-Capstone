@@ -139,7 +139,7 @@ UserController.prototype.createUser = function(req, res) {
                 res.status(201).json(user);
             }).catch(function(error) {
                 console.log(error);
-                res.status(500).json({error: error});
+                res.status(500).json({message: 'username already used'});
             });
         });
     });

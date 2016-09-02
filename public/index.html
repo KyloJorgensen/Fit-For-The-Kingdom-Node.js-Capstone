@@ -26,7 +26,7 @@
 				<form data-bind="submit: validateLogin">
 					<h2>LOGIN</h2>
 					<p>Username: <input type="text" data-bind="value: userUsername" /></p>
-					<p>Password: <input type="text" data-bind="value: userPassword" /></p>
+					<p>Password: <input type="password" data-bind="value: userPassword" /></p>
 					<input type="submit" value="LOGIN" />
 				</form>
 			</div>
@@ -63,8 +63,8 @@
 				<form data-bind="submit: validateNewUser">
 				    <p>Name: <input placeholder="Name" data-bind="value: newUserName" /><p>
 				    <p>Username: <input placeholder="Username" data-bind="value: newUserUsername" /></p>
-				    <p>Password: <input placeholder="Password" data-bind="value: newUserPassword" /></p>
-				    <p>Verify Pasword: <input placeholder="Password" data-bind="value: newUserVerifyPassword" /></p>
+				    <p>Password: <input type="password" placeholder="Password" data-bind="value: newUserPassword" /></p>
+				    <p>Verify Password: <input type="password" placeholder="Password" data-bind="value: newUserVerifyPassword" /></p>
 				    <button type="submit">SIGN UP</button>
 				</form>
 			</div>
@@ -107,7 +107,7 @@
 								<p data-bind="foreach: currentUser">User: <span id="name" data-bind="text: name"></span></p>
 							</div>
 							<p>Date: <span id="date" data-bind="text: date" ></span></p>
-							<p>Exercise: <input type="number" min="0" id="exercise" data-bind="value: exercise" /> (+1 for every 10mins)</p>
+							<p>Exercise: <input type="number" min="0" pattern="[0-9]*" id="exercise" data-bind="value: exercise" /> (+1 for every 10mins)</p>
 							<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" />(number)</p>
 							<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" />(0-3)</p>
 							<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedSoda" />(true or false)</p>
