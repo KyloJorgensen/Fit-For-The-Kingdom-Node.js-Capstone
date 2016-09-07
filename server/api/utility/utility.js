@@ -27,13 +27,13 @@ UtilityFunctions.prototype.validateLoggedIn = function(req, res, callback) {
                     callback(user);
                 } else {
                     console.log('Invald user');
-                    res.status(400).json({message: 'Bad Username ande Password'});
+                    res.status(400).json({message: 'Bad Username and/or Password'});
                 }
             }
         });
     }).catch(function(error) {
         console.log(error);
-        res.status(400).json(error);
+        res.status(400).json({message: 'Bad Username and/or Password'});
     });
 };
 

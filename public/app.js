@@ -60,7 +60,6 @@ var Model = function(self) {
 	    	that.user = {username: username, password: password};
 	    	self.login(user);
 	    }).fail(function(error){
-	        console.log(error);
 	        alert(error.responseText);
 	        that.user = {};
 	    });
@@ -81,11 +80,6 @@ var Model = function(self) {
 	    	self.login(user);
 	    }).fail(function(error){
 	    	alert(error.responseText);
-	    	if (error.code == 11000) {
-	    		alert('Username already taken');
-	    	} else {
-	    		console.log(error);
-	    	}
 	        that.user = {};
 	    });
 	};
