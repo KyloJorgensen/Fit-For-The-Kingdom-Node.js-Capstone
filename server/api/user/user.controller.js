@@ -1,14 +1,14 @@
 'use strict';
 var User = require('./user.model'),
     Date = require('../date/date.model'),
-    Utility = require('../utility/utility'),
-    bcrypt = require('bcryptjs');
+    bcrypt = require('bcryptjs'),
+    logout = require('express-passport-logout');
 
 function UserController() {};
 
 
 // get public users and returns to client
-UserController.prototype.getUsers = function(req, res) {
+UserController.prototype.getUsers = function(req, res, next) {
     return new Promise(function(resolve, reject) {
         User.find({}, function(error, users) {
             if (error) {
@@ -22,43 +22,22 @@ UserController.prototype.getUsers = function(req, res) {
         // pushes users that are pubilc to a single array
         for (var i = 0; i < users.length; i++) {
             if (users[i].publicStatus) {
-                publicUsers.push(users[i]);
+                publicUsers.push({name: users[i].name, totalScore: users[i].totalScore, user: users[i]});
             }
         }
         res.status(200).json(publicUsers);
     }).catch(function(error) {
-        console.log(error);
-        res.status(500).json(error);
+        next({error: error});
     });
 };
 
 // gets a user by id and returns to client
-UserController.prototype.getUser = function(req, res) {
-    return new Promise(function(resolve, reject) {
-        User.findOne({
-            _id: req.params.userId
-        }, function(error, user) {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(user);
-            }
-        });
-    }).then(function(user) {
-        if (user) {
-            res.status(200).json(user);
-        } else {
-            res.status(400).end();
-        }
-    }).catch(function(error) {
-        console.log(error);
-        res.status(404).json(error);
-    });
-            
+UserController.prototype.getUser = function(req, res, next) {
+    return res.status(200).json(req.user);   
 };
 
 // creates new user from username, password, name
-UserController.prototype.createUser = function(req, res) {
+UserController.prototype.createUser = function(req, res, next) {
     // validate all variable are correct
     if (!req.body) { 
         return res.status(400).json({message: "No request body"});
@@ -68,42 +47,12 @@ UserController.prototype.createUser = function(req, res) {
         return res.status(422).json({message: 'Missing field: username'});
     }
 
-    var username = req.body.username;
-
-    if (typeof username !== 'string') { 
-        return res.status(422).json({message: 'Incorrect field type: username'});
-    }
-
-    if (username === '') { 
-        return res.status(422).json({message: 'Incorrect field length: username'});
-    }
-
     if (!('password' in req.body)) { 
         return res.status(422).json({message: 'Missing field: password'});
     }
 
-    var password = req.body.password;
-
-    if (typeof password !== 'string') { 
-        return res.status(422).json({message: 'Incorrect field type: password'});
-    }
-
-    if (password === '') { 
-        return res.status(422).json({message: 'Incorrect field length: password'});
-    }
-
     if (!('name' in req.body)) { 
         return res.status(422).json({message: 'Missing field: name'});
-    }
-
-    var name = req.body.name;
-
-    if (typeof name !== 'string') { 
-        return res.status(422).json({message: 'Incorrect field type: name'});
-    }
-
-    if (name === '') { 
-        return res.status(422).json({message: 'Incorrect field length: name'});
     }
 
     // generates the salt for bcrypt to encrypt the password
@@ -138,15 +87,18 @@ UserController.prototype.createUser = function(req, res) {
             }).then(function(user) {
                 res.status(201).json(user);
             }).catch(function(error) {
-                console.log(error);
-                res.status(500).json({message: 'username already used'});
+                next({status: 400, message: 'username already used', error: error});
             });
         });
     });
 };
 
+UserController.prototype.login = function(req, res, next) {
+    return res.status(200).json(req.user);
+};
+
 // deletes user
-UserController.prototype.deleteUser = function(req, res) {
+UserController.prototype.deleteUser = function(req, res, next) {
     if (req.params.password === 'sdfghuytrfgvhjiuqyghjuhgfde456789765r4fghbvfrt54rfgbnjkio98765rtghgft') {
         return new Promise(function(resolve, reject) {
             User.findOneAndRemove({_id: req.params.userId}, function(error, user) {
@@ -171,36 +123,33 @@ UserController.prototype.deleteUser = function(req, res) {
         }).then(function(user) {
             res.status(200).json({message: 'delete ' + user.username});
         }).catch(function(error) {
-            console.log(error);
-            res.status(400).json(error);
+            next({error: error, status: 404});
         });
+    } else {
+        next({status: 400});
     }
 };
 
 // updates users Public status
-UserController.prototype.updatePublicStatus = function(req, res) {
-    Utility.validateLoggedIn(req, res, function(user) {
-        return new Promise(function(resolve, reject) {
-            User.findOneAndUpdate({
-                _id: user._id
-            },{
-                $set: {publicStatus: req.body.publicStatus}
-            }, {
-                new: true
-            }, function(error, user) {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(user);
-                }
-            });
-        }).then(function(user) {
-            res.status(202).json(user);
-        }).catch(function(error) {
-            console.log(error);
-            res.status(400).json(error);
-        })
-        
+UserController.prototype.updatePublicStatus = function(req, res, next) {
+    return new Promise(function(resolve, reject) {
+        User.findOneAndUpdate({
+            _id: req.user._id
+        },{
+            $set: {publicStatus: req.body.publicStatus}
+        }, {
+            new: true
+        }, function(error, user) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(user);
+            }
+        });
+    }).then(function(user) {
+        res.status(202).json(user);
+    }).catch(function(error) {
+        next({error: error});
     });
 };
 

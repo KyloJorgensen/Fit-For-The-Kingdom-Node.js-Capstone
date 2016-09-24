@@ -1,5 +1,11 @@
 'use strict';
 
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode('0x' + p1);
+    }));
+}
+
 var Model = function(self) {
 	var that = this;
 	this.user = {};
@@ -7,7 +13,7 @@ var Model = function(self) {
 	// Gets array of public Users
 	this.getUsers = function() {
 		$.ajax({
-	        url: '/user',
+	        url: '/user/all',
 	        datatype: 'jsonp',
 	        type: 'GET'
 	    }).done(function(users) {
@@ -18,11 +24,14 @@ var Model = function(self) {
 	};
 
 	// Gets user object
-	this.getUser = function(userId) {
+	this.getUser = function() {
 		$.ajax({
 			type: 'GET',
 			contentType: 'application/json',
-			url: '/user/' + userId
+			headers: {
+				"Authorization": "Basic " + b64EncodeUnicode(that.user.username + ':' + that.user.password) 
+			},
+			url: '/user'
 		}).done(function(user) {
 			self.generateUser(user);
 		}).fail(function(error) {
@@ -35,7 +44,10 @@ var Model = function(self) {
 		$.ajax({
 		    type: 'GET',
 		    contentType: 'application/json',
-		    url: '/date/users/' + user._id
+			headers: {
+				"Authorization": "Basic " + b64EncodeUnicode(that.user.username + ':' + that.user.password) 
+			},
+		    url: '/date/users/'
 		}).done(function(date) {
 	    	self.generateUserDates(date);
 	    }).fail(function(error){
@@ -68,14 +80,13 @@ var Model = function(self) {
 	// post a login attempt
 	this.validateLogin = function(username, password) {
 		that.user = {username: username, password: password};
-		var data = {};
-		data.user = that.user;
-
 		$.ajax({
 		    type: 'POST',
-		    data: JSON.stringify(data),
 		    contentType: 'application/json',
-		    url: '/login'
+		    headers: {
+				"Authorization": "Basic " + b64EncodeUnicode(username + ':' + password) 
+			},
+		    url: '/user/login'
 		}).done(function(user) {
 	    	self.login(user);
 	    }).fail(function(error){
@@ -94,6 +105,9 @@ var Model = function(self) {
 		    type: 'PUT',
 		    data: JSON.stringify(data),
 		    contentType: 'application/json',
+		    headers: {
+				"Authorization": "Basic " + b64EncodeUnicode(that.user.username + ':' + that.user.password) 
+			},
 		    url: '/user/publicStatus'
 		}).done(function(user) {
 	    	self.generateUser(user);
@@ -107,7 +121,10 @@ var Model = function(self) {
 		$.ajax({
 		    type: 'GET',
 		    contentType: 'application/json',
-		    url: '/date/date/' + dateId
+			headers: {
+				"Authorization": "Basic " + b64EncodeUnicode(that.user.username + ':' + that.user.password) 
+			},		    
+		    url: '/date/' + dateId
 		}).done(function(date) {
 	    	self.generateEditDate(date);
 	    }).fail(function(error){
@@ -119,11 +136,13 @@ var Model = function(self) {
 	this.createDate = function(date) {
 		var data = {};
 		data.date = date;
-		data.user = that.user;
 		$.ajax({
 		    type: 'POST',
 		    data: JSON.stringify(data),
 		    contentType: 'application/json',
+		    headers: {
+				"Authorization": "Basic " + b64EncodeUnicode(that.user.username + ':' + that.user.password) 
+			},	
 		    url: '/date' 
 		}).done(function(date) {
 			self.editDate(date);
@@ -145,6 +164,9 @@ var Model = function(self) {
 		    type: 'PUT',
 		    data: JSON.stringify(data),
 		    contentType: 'application/json',
+		    headers: {
+				"Authorization": "Basic " + b64EncodeUnicode(that.user.username + ':' + that.user.password) 
+			},	
 		    url: '/date'
 		}).done(function(user) {
 			self.generateUser(user);
@@ -163,6 +185,9 @@ var Model = function(self) {
 		    type: 'DELETE',
 		    data: JSON.stringify(data),
 		    contentType: 'application/json',
+		    headers: {
+				"Authorization": "Basic " + b64EncodeUnicode(that.user.username + ':' + that.user.password) 
+			},	
 		    url: '/date'
 		}).done(function(user) {
 			self.generateUser(user);

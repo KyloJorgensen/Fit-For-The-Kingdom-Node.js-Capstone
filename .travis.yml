@@ -1,5 +1,5 @@
 language: node_js
-node_js: 
+node_js:
 - node
 services:
 - mongodb
@@ -9,3 +9,10 @@ addons:
     - mongodb-3.2-precise
     packages:
     - mongodb-org-server
+deploy:
+  provider: heroku
+  api_key:
+    secure: ouZ1OH9VozhNB5Zu6gEU8Zqu9YHZYM3S6RnZD8oZtL4ZIxXBwTnTEefMDalHYC2PmxEkBzTHCd0A1po1RaCNxbN7Mf7a/+iL19S3SJB3J+GCDiE17BOzZzSJip8RreY5w8W1r0f/SOjWT/zPZ+MYtjROqHU7miqdsqiEqaZygz2TFwFwpSm3NQ7TESs3uMwP4fc7EwtcMVoQ+48OCclhhliDrr5JGPdV5+2Pc4EVOahmK4p6kRBQQFnOF96RhLajuOl8XbjW91H9UIKEAPqhGsqgHY9WsCoF+DVaW08En9GXZldgzTajKnch5PircbKMQ9zIbv6c0XC+/ndo8dL+PaoPL7r5Km6jKz5c7245e9GFArRfhSn1JCC8NICfMY3CnXqUfxsd5G56iWWFevMljjaLQ3a2c+KYwnAhuad75s7iiifQPkjL8d5Qg9j1LxQS0+Ot9ab+oGnXeTHgSEPX6SvRwdiaWRfd3NY/yL/70tk4Ku2hfEU/OayTdBuFoB8oqY1wd4Io+efyK1Cd9i/95G0Xuj6PyV9tVfRPaZ/dk7ZtfL4AQAiwOFqWnoetOoX8py/uWLXvXscHRUrVEV6VXv/wqCDXQqosUSgWdJTJrPNcQw+/NVB4joyEZqCsY3le4GGrd2Gk82klBZpYAcDjyNoQHsflmMgKqLovqzSxYaU=
+  app: fit-for-the-kingdom-nodejs-cap
+  on:
+    repo: KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone

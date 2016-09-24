@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose');
-
+var User = require('../user/user.model');
 
 var dateSchema = mongoose.Schema({
     _author: {
