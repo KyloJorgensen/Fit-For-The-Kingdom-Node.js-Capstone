@@ -152,9 +152,7 @@ var Model = function(self) {
 
 	// puts a request to update a date
 	this.updateDate = function(date) {
-		var data = {};
-		data.date = date;
-		data.user = that.user;
+		var data = date;
 		$.ajax({
 		    type: 'PUT',
 		    data: JSON.stringify(data),
@@ -174,7 +172,6 @@ var Model = function(self) {
 	this.deleteUserDate = function(dateId) {
 		var data = {};
 		data.dateId = dateId;
-		data.user = that.user;
 
 		$.ajax({
 		    type: 'DELETE',

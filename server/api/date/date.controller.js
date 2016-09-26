@@ -99,30 +99,55 @@ DateController.prototype.createDate = function(req, res, next) {
 // updates date and returns new user
 DateController.prototype.updateDate = function(req, res, next) {
 	return new Promise(function(resolve, reject) {
-		var newDate = {};
-	
-		newDate.exercise = req.body.date.exercise;
-		newDate.sugar = req.body.date.sugar;
-		newDate.soda = req.body.date.soda;
-		newDate.healthyChoice = req.body.date.healthyChoice;
-		newDate.satisfied = req.body.date.satisfied;
+		var errorMessage = false;
+
+		if (!req.body.exercise) {
+			errorMessage = 'Missing body exercise';
+		} else if (!req.body.sugar) {
+			errorMessage = 'Missing body sugar';
+		} else if (!req.body.soda) {
+			errorMessage = 'Missing body soda';
+		} else if (!req.body.healthyChoice) {
+			errorMessage = 'Missing body healthyChoice';
+		} else if (!req.body.satisfied) {
+			errorMessage = 'Missing body satisfied';
+		} else if (!req.body._id) {
+			errorMessage = 'Missing body _id';
+		} else if (!req.body._author) {
+			errorMessage = 'Missing body _author';
+		}
 
 		var score = 0;
 		var all = true;
-	
-		newDate.exercise > 0 ? score += newDate.exercise * 2 : all = false ;
-		newDate.sugar ? score += 2 : all = false ;
-		newDate.soda ? score += 2 : all = false ;
-		newDate.healthyChoice > 0 ? score += newDate.healthyChoice : all = false ;
-		
-		score += newDate.satisfied;
-		newDate.satisfied == 3 ? '' : all = false ;
+
+		req.body.sugar ? score += 2 : all = false ;
+		req.body.soda ? score += 2 : all = false ;
+
+		if (req.body.exercise < 0) {errorMessage = 'exercise cannot be below 0'} 
+		req.body.exercise > 0 ? score += Number(req.body.exercise) * 2 : all = false ;
+
+		if (req.body.healthyChoice < 0) {errorMessage = 'healthyChoice cannot be below 0'}
+		req.body.healthyChoice > 0 ? score += Number(req.body.healthyChoice) : all = false ;
+
+		if (req.body.satisfied > 3 || req.body.satisfied < 0) {
+			errorMessage = 'Satisfied need to between 0 and 3';
+		}
+		score += Number(req.body.satisfied);
+		req.body.satisfied == 3 ? '' : all = false ;
+
 		all == true ? score *= 2 : '';
 
+		var newDate = req.body;
 		newDate.score = score;
 
+		if (errorMessage) {
+			var error = new Error(errorMessage);
+			error.code = 400;
+			return next(error);
+		}
+
 		Date.findOneAndUpdate({
-			_id: req.body.date._id
+			_id: req.body._id
 		}, {
 			$set: newDate
 		}, {
@@ -139,26 +164,29 @@ DateController.prototype.updateDate = function(req, res, next) {
 			_id: date._author
 		}, function(error, user) {
 			if (error) {
-				next({error: error});
+				next(error);
 			} else {
 				user.updateTotalScore(function(error, user) {
 					if (error) {
-						next({error: error});
+						next(error);
 					} else {
-				        user['username'] = undefined;
-				        user['password'] = undefined;
 						res.json(user);
 					}
 				});
 			}
 		});
 	}).catch(function(error) {
-		next({error: error});
+		next(error);
 	});
 };
 
 // delete date and returns new user
 DateController.prototype.deleteDate = function(req, res, next) {
+	if (!req.body.dateId) {
+		var error = new Error('Missing body dateId')
+		error.code = 400;
+		return next(error);
+	}
 	return new Promise(function(resolve, reject) {
 		Date.findOneAndRemove({
 			_id: req.body.dateId
@@ -174,21 +202,19 @@ DateController.prototype.deleteDate = function(req, res, next) {
 			_id: date._author
 		}, function(error, user) {
 			if (error) {
-				next({error: error});
+				next(error);
 			} else {
 				user.updateTotalScore(function(error, user) {
 					if (error) {
-						next({error: error});
+						next(error);
 					} else {
-				        user['username'] = undefined;
-				        user['password'] = undefined;
 						res.status(200).json(user);
 					}
 				});
 			}
 		});
 	}).catch(function(error) {
-		next({error: error});
+		next(error);
 	});
 };
 

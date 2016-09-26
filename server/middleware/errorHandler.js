@@ -15,7 +15,7 @@ module.exports = function(app) {
 		if (res.headerSent) {
 			return next(error);
 		}
-		console.log(error, 'there');
+		
 		if (error.name == 'ValidationError') {
 			res.status(400);
 		} else if (error.name == 'MongoError') {
@@ -41,6 +41,9 @@ module.exports = function(app) {
 			return res.json('missing message');
 		}
 
-		res.status(500).json({'error': error});
+		next(error)
 	});
+	app.use(function(error, req, res, next) {
+		console.log('CRITICAL ERROR: ', error);
+	})
 };
