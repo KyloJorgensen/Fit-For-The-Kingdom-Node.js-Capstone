@@ -60,7 +60,6 @@ DateController.prototype.createDate = function(req, res, next) {
 		}
 
 		for (var i = 0; i < dates.length; i++) {
-			console.log(dates[i].date, req.body.date);
 			if (dates[i].date === req.body.date) {
 				var error = new Error('Date Already Exsites');
 				error.code = 403;
@@ -101,19 +100,19 @@ DateController.prototype.updateDate = function(req, res, next) {
 	return new Promise(function(resolve, reject) {
 		var errorMessage = false;
 
-		if (!req.body.exercise) {
+		if (req.body.exercise == undefined) {
 			errorMessage = 'Missing body exercise';
-		} else if (!req.body.sugar) {
+		} else if (req.body.sugar == undefined) {
 			errorMessage = 'Missing body sugar';
-		} else if (!req.body.soda) {
+		} else if (req.body.soda == undefined) {
 			errorMessage = 'Missing body soda';
-		} else if (!req.body.healthyChoice) {
+		} else if (req.body.healthyChoice == undefined) {
 			errorMessage = 'Missing body healthyChoice';
-		} else if (!req.body.satisfied) {
+		} else if (req.body.satisfied == undefined) {
 			errorMessage = 'Missing body satisfied';
-		} else if (!req.body._id) {
+		} else if (req.body._id == undefined) {
 			errorMessage = 'Missing body _id';
-		} else if (!req.body._author) {
+		} else if (req.body._author == undefined) {
 			errorMessage = 'Missing body _author';
 		}
 

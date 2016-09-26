@@ -76,7 +76,10 @@ UserController.prototype.createUser = function(req, res, next) {
                     }
                 })
             }).then(function(user) {
-                res.status(201).json(user);
+                var _user = user;
+                _user['username'] = undefined;
+                _user['password'] = undefined;
+                res.status(201).json(_user);
             }).catch(function(error) {
                 next(error);
             });
@@ -142,7 +145,6 @@ UserController.prototype.updatePublicStatus = function(req, res, next) {
     }).then(function(user) {
         user['username'] = undefined;
         user['password'] = undefined;
-        console.log(user);
         res.status(202).json(user);
     }).catch(function(error) {
         next(error);

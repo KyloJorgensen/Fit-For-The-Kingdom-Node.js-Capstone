@@ -152,10 +152,9 @@ var Model = function(self) {
 
 	// puts a request to update a date
 	this.updateDate = function(date) {
-		var data = date;
 		$.ajax({
 		    type: 'PUT',
-		    data: JSON.stringify(data),
+		    data: JSON.stringify(date),
 		    contentType: 'application/json',
 		    headers: {
 				"Authorization": "Basic " + b64EncodeUnicode(that.user.username + ':' + that.user.password) 
