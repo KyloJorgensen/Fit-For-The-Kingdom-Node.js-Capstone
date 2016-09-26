@@ -22,12 +22,24 @@ UserController.prototype.getUsers = function(req, res, next) {
         // pushes users that are pubilc to a single array
         for (var i = 0; i < users.length; i++) {
             if (users[i].publicStatus) {
-                publicUsers.push({name: users[i].name, totalScore: users[i].totalScore, user: users[i]});
+                if (users[i].name === undefined) {
+                    var error = new Error('Missing users['+i+'].name');
+                    error.code = 500;
+                    error.users = users;
+                    return next(error);
+                }
+                if (users[i].totalScore === undefined) {
+                    var error = new Error('Missing users['+i+'].totalScore');
+                    error.code = 500;
+                    error.users = users;
+                    return next(error);
+                }
+                publicUsers.push({name: users[i].name, totalScore: users[i].totalScore});
             }
         }
         res.status(200).json(publicUsers);
     }).catch(function(error) {
-        next({error: error});
+        next(error);
     });
 };
 
@@ -87,7 +99,7 @@ UserController.prototype.createUser = function(req, res, next) {
             }).then(function(user) {
                 res.status(201).json(user);
             }).catch(function(error) {
-                next({status: 400, message: 'username already used', error: error});
+                next(error);
             });
         });
     });
@@ -123,7 +135,7 @@ UserController.prototype.deleteUser = function(req, res, next) {
         }).then(function(user) {
             res.status(200).json({message: 'delete ' + user.username});
         }).catch(function(error) {
-            next({error: error, status: 404});
+            next(error);
         });
     } else {
         next({status: 400});
@@ -136,7 +148,7 @@ UserController.prototype.updatePublicStatus = function(req, res, next) {
         User.findOneAndUpdate({
             _id: req.user._id
         },{
-            $set: {publicStatus: req.body.publicStatus}
+            $set: {publicStatus: !req.user.publicStatus}
         }, {
             new: true
         }, function(error, user) {
@@ -149,7 +161,7 @@ UserController.prototype.updatePublicStatus = function(req, res, next) {
     }).then(function(user) {
         res.status(202).json(user);
     }).catch(function(error) {
-        next({error: error});
+        next(error);
     });
 };
 

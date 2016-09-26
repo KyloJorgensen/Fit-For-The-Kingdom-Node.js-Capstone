@@ -5,8 +5,10 @@ var User = require('../api/user/user.model');
 module.exports = function authenticate(req, res, next) {
   var auth = req.headers.authorization;
 
-  if (!auth) {
-    return next({message: 'missing authention'});
+  if (!auth) {      
+    var error = new Error('Missing Authentication');
+    error.code = 401;
+    return next(error);
   }
 
   var splitAuth = auth.split(' ');
@@ -26,21 +28,25 @@ module.exports = function authenticate(req, res, next) {
     });
   }).then(function(user) {
     if (!user) {
-      return next({message: 'Bad Username', status: 401})
+      var error = new Error('Bad Username or Password');
+      error.code = 401;
+      return next(error);
     }
     user.validatePassword(password, function(err, isVaild) {
       if (err) {
-        next({error: err});
+        next(err);
       } else {
         if (isVaild) {
           req.user = user;
           next();
-        } else {
-          next({message: 'Bad Password', status: 401});
+        } else {     
+          var error = new Error('Bad Username or Password');
+          error.code = 401;
+          return next(error);
         }
       }
     });
   }).catch(function(error) {
-      next({error: error});
+      next(error);
   });
 };

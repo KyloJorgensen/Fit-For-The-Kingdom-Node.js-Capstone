@@ -77,7 +77,7 @@ var Model = function(self) {
 	    });
 	};
 
-	// post a login attempt
+	// post a login attempt	
 	this.validateLogin = function(username, password) {
 		that.user = {username: username, password: password};
 		$.ajax({
@@ -97,13 +97,8 @@ var Model = function(self) {
 
 	// makes a request to change a user public status
 	this.updateUserPublicStatus = function(publicStatus) {
-		var data = {};
-		data.user = that.user;
-		data.publicStatus = publicStatus;
-
 		$.ajax({
 		    type: 'PUT',
-		    data: JSON.stringify(data),
 		    contentType: 'application/json',
 		    headers: {
 				"Authorization": "Basic " + b64EncodeUnicode(that.user.username + ':' + that.user.password) 
