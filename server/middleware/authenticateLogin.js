@@ -39,7 +39,7 @@ module.exports = function authenticate(req, res, next) {
         if (isVaild) {
           req.user = user;
           next();
-        } else {     
+        } else {
           var error = new Error('Bad Username or Password');
           error.code = 401;
           return next(error);

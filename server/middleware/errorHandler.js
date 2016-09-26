@@ -5,7 +5,6 @@ var express = require('express');
 module.exports = function(app) {
 	app.use(function(error, req, res, next) {
 		if (error) {
-			console.log(error);
 			// return res.status(299).json(error);
 			next(error);
 		} else {
@@ -16,9 +15,22 @@ module.exports = function(app) {
 		if (res.headerSent) {
 			return next(error);
 		}
-
-		if (error.code) {
+		console.log(error, 'there');
+		if (error.name == 'ValidationError') {
+			res.status(400);
+		} else if (error.name == 'MongoError') {
+			if (error.code == 11000) {
+				res.status(400);
+				return res.json('User name already exsists');
+			} 
+		} else if (error.name == 'CastError') {
+			res.status(400);
+		} else if (error.code) {
 			res.status(error.code);
+		} else if (error.message == 'Illegal arguments: undefined, string') {
+			res.status(400);
+		} else if (error.reason == 'undefined') {
+			res.status(400); 
 		} else {
 			res.status(500);
 		}
@@ -29,7 +41,6 @@ module.exports = function(app) {
 			return res.json('missing message');
 		}
 
-		console.error('Server Error: ', error);
 		res.status(500).json({'error': error});
 	});
 };

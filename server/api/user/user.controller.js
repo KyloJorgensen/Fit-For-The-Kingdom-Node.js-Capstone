@@ -51,42 +51,38 @@ UserController.prototype.getUser = function(req, res, next) {
 // creates new user from username, password, name
 UserController.prototype.createUser = function(req, res, next) {
     // validate all variable are correct
-    if (!req.body) { 
-        return res.status(400).json({message: "No request body"});
-    }
+    // if (!req.body) { 
+    //     return res.status(400).json({message: "No request body"});
+    // }
 
-    if (!('username' in req.body)) { 
-        return res.status(422).json({message: 'Missing field: username'});
-    }
+    // if (!('username' in req.body)) { 
+    //     return res.status(422).json({message: 'Missing field: username'});
+    // }
 
-    if (!('password' in req.body)) { 
-        return res.status(422).json({message: 'Missing field: password'});
-    }
+    // if (!('password' in req.body)) { 
+    //     return res.status(422).json({message: 'Missing field: password'});
+    // }
 
-    if (!('name' in req.body)) { 
-        return res.status(422).json({message: 'Missing field: name'});
-    }
+    // if (!('name' in req.body)) { 
+    //     return res.status(422).json({message: 'Missing field: name'});
+    // }
 
     // generates the salt for bcrypt to encrypt the password
     bcrypt.genSalt(10, function(err, salt) {
         if (err) {
-            return res.status(500).json({
-                message: 'Internal server error'
-            });
+            return next(err);
         }
         // generates encrypted password
-        bcrypt.hash(password, salt, function(err, hash) {
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
             if (err) {
-                return res.status(500).json({
-                    message: 'Internal server error'
-                });
+                return next(err);
             }
             return new Promise(function(resolve, reject) {
                 // creates user useing username, encrypted password (hash), name
                 User.create({
-                    username: username,
+                    username: req.body.username,
                     password: hash,
-                    name: name,
+                    name: req.body.name,
                     publicStatus: true,
                     totalScore: 0
                 }, function(error, user) {
@@ -138,7 +134,9 @@ UserController.prototype.deleteUser = function(req, res, next) {
             next(error);
         });
     } else {
-        next({status: 400});
+        var error = new Error('Delete FAILED');
+        error.code = 400;
+        next(error);
     }
 };
 

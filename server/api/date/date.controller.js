@@ -18,7 +18,7 @@ DateController.prototype.getUserDates = function(req, res, next) {
 	}).then(function(dates) {
 		res.status(200).json(dates);
 	}).catch(function(error) {
-		next({error: error});
+		next(error);
 	});
 };
 
@@ -33,13 +33,9 @@ DateController.prototype.getDate = function(req, res, next) {
 			}
 		});
 	}).then(function(date) {
-		if (date) {
-			res.status(200).json(date);
-		} else {
-			next({status: 404});
-		}
+		res.status(200).json(date);
 	}).catch(function(error) {
-		next({error: error});
+		next(error);
 	});
 };
 
