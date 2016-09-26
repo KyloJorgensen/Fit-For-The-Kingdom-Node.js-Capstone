@@ -61,6 +61,8 @@ userSchema.methods.updateTotalScore = function(callback) {
             if (error) {
                 callback(error);
             } else {
+                user['username'] = undefined;
+                user['password'] = undefined;
                 callback(null, user);
             }
         });

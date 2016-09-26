@@ -25,7 +25,7 @@ DateController.prototype.getUserDates = function(req, res, next) {
 // get date by dateId and returns it to client
 DateController.prototype.getDate = function(req, res, next) {
 	return new Promise(function(resolve, reject) {
-		Date.findOne({_id: req.params.dateId}, function(error, date) {
+		Date.findOne({_id: req.params.dateId, _author: req.user._id}, function(error, date) {
 			if (error) {
 				reject(error);
 			} else {
@@ -53,9 +53,18 @@ DateController.prototype.createDate = function(req, res, next) {
 		});
 	}).then(function(dates) {
 		// checks if date is already being used by that user
+		if (!req.body.date) {
+			var error = new Error('missing date in body');
+			error.code = 400;
+			return next(error);
+		}
+
 		for (var i = 0; i < dates.length; i++) {
-			if (dates[i].date == req.body.date) {
-				return next({status: 400});
+			console.log(dates[i].date, req.body.date);
+			if (dates[i].date === req.body.date) {
+				var error = new Error('Date Already Exsites');
+				error.code = 403;
+				return next(error);
 			}
 		}
 		return new Promise(function(resolve, reject) {
@@ -80,10 +89,10 @@ DateController.prototype.createDate = function(req, res, next) {
 	    }).then(function(date) {
 	    	res.status(201).json(date);
 	    }).catch(function(err) {
-	    	next({error: err});
+	    	next(err);
 	    });
 	}).catch(function(error) {
-		next({error: error});
+		next(error);
 	});
 };
 
@@ -136,6 +145,8 @@ DateController.prototype.updateDate = function(req, res, next) {
 					if (error) {
 						next({error: error});
 					} else {
+				        user['username'] = undefined;
+				        user['password'] = undefined;
 						res.json(user);
 					}
 				});
@@ -169,6 +180,8 @@ DateController.prototype.deleteDate = function(req, res, next) {
 					if (error) {
 						next({error: error});
 					} else {
+				        user['username'] = undefined;
+				        user['password'] = undefined;
 						res.status(200).json(user);
 					}
 				});

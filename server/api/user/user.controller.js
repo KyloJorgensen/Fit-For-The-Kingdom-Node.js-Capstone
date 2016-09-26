@@ -50,23 +50,6 @@ UserController.prototype.getUser = function(req, res, next) {
 
 // creates new user from username, password, name
 UserController.prototype.createUser = function(req, res, next) {
-    // validate all variable are correct
-    // if (!req.body) { 
-    //     return res.status(400).json({message: "No request body"});
-    // }
-
-    // if (!('username' in req.body)) { 
-    //     return res.status(422).json({message: 'Missing field: username'});
-    // }
-
-    // if (!('password' in req.body)) { 
-    //     return res.status(422).json({message: 'Missing field: password'});
-    // }
-
-    // if (!('name' in req.body)) { 
-    //     return res.status(422).json({message: 'Missing field: name'});
-    // }
-
     // generates the salt for bcrypt to encrypt the password
     bcrypt.genSalt(10, function(err, salt) {
         if (err) {
@@ -157,6 +140,9 @@ UserController.prototype.updatePublicStatus = function(req, res, next) {
             }
         });
     }).then(function(user) {
+        user['username'] = undefined;
+        user['password'] = undefined;
+        console.log(user);
         res.status(202).json(user);
     }).catch(function(error) {
         next(error);

@@ -20,7 +20,7 @@ module.exports = function(app) {
 			res.status(400);
 		} else if (error.name == 'MongoError') {
 			if (error.code == 11000) {
-				res.status(400);
+				res.status(403);
 				return res.json('User name already exsists');
 			} 
 		} else if (error.name == 'CastError') {

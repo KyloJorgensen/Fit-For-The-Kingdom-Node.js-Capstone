@@ -37,6 +37,8 @@ module.exports = function authenticate(req, res, next) {
         next(err);
       } else {
         if (isVaild) {
+          user['username'] = undefined;
+          user['password'] = undefined;
           req.user = user;
           next();
         } else {
