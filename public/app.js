@@ -307,7 +307,7 @@ var ViewModel = function(Model) {
 	this.newUserVerifyPassword = ko.observable();
 
 	// validates the new user fields have content
-	this.validateNewUser = function() {
+	this.validateNewUser = function(event) {
 		event.preventDefault();
 		if (!self.newUserName()) {
 			return alert('Missing field: Name');
@@ -332,7 +332,7 @@ var ViewModel = function(Model) {
 	this.userPassword = ko.observable('');
 
 	// validate user name and password fields are filled
-	this.validateLogin = function() {
+	this.validateLogin = function(event) {
 		event.preventDefault();
 
 		if (!self.userUsername()) {

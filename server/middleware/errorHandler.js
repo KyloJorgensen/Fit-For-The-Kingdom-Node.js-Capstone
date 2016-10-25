@@ -1,11 +1,8 @@
 'use strict';
 
-var express = require('express');
-
 module.exports = function(app) {
 	app.use(function(error, req, res, next) {
 		if (error) {
-			// return res.status(299).json(error);
 			next(error);
 		} else {
 			res.status(500).json('missing error');
@@ -29,8 +26,6 @@ module.exports = function(app) {
 			res.status(error.code);
 		} else if (error.message == 'Illegal arguments: undefined, string') {
 			res.status(400);
-		} else if (error.reason == 'undefined') {
-			res.status(400); 
 		} else {
 			res.status(500);
 		}
