@@ -8,135 +8,155 @@
 </head>
 <body>
 	<nav>
-		<h1 class="nav-title">Fit For The Kingdom</h1>
-		<div class="nav-menu">
-			<button data-bind="click: getUsers">MAIN</button>
-			<button class="loggedOut" data-bind="click: showLogin">LOGIN</button>
-			<button class="loggedOut" data-bind="click: showSignUp">SIGN UP</button>
-			<button class="loggedIn" data-bind="click: getUser">PROFILE</button>
-			<button class="loggedIn" data-bind="click: logout">LOGOUT</button>
+		<div class="container">
+			<div class="nav-title">
+				<h1>Fit For The Kingdom</h1>
+			</div>
+			<div class="nav-menu">
+				<a data-bind="click: getUsers">MAIN</a>
+				<a class="loggedOut" data-bind="click: showLogin">LOGIN</a>
+				<a class="loggedOut" data-bind="click: showSignUp">SIGN UP</a>
+				<a class="loggedIn" data-bind="click: getUser">PROFILE</a>
+				<a class="loggedIn" data-bind="click: logout">LOGOUT</a>
+			</div>
 		</div>
 	</nav>
 	<!-- nav -->
 
 	<main>
 		<div class="container">
-			<div class="login toggle">
-				<form data-bind="submit: validateLogin">
-					<h2>LOGIN</h2>
-					<p>Username: <input type="text" data-bind="value: userUsername" /></p>
-					<p>Password: <input type="password" data-bind="value: userPassword" /></p>
-					<input type="submit" value="LOGIN" />
-				</form>
-			</div>
-			<!-- Login -->
-			<div class="users toggle">
-				<div>
-					<h1>Welcome!!</h1>
-					<h3>A healthy habit tracking website. Join us in our little competiton. </h3>
+			<section>
+				<div class="login toggle">
+					<form data-bind="submit: validateLogin">
+						<h2>LOGIN</h2>
+						<p>Username: <input type="text" placeholder="Username" data-bind="value: userUsername" /></p>
+						<p>Password: <input type="password" placeholder="Password" data-bind="value: userPassword" /></p>
+						<input type="submit" value="LOGIN" />
+					</form>
 				</div>
-				<div class="users-table">
-					<div class="users-names">
-						<p>Names</p>
-						<p>Score</p>
-						<ul data-bind="foreach: users">
-							<li>
-								<p data-bind="text: name"></p>
-							</li>
-						</ul>
-						<ul data-bind="foreach: users">
-							<li>
-								<p data-bind="text: totalScore"></p>
-							</li>
-						</ul>
+				<!-- Login -->
+				<div class="users toggle">
+					<div>
+						<h1>Welcome!!</h1>
+						<h3>A healthy habit tracking website. Join us in our little competiton. </h3>
+					</div>
+					<div class="users-body">
+						<div class="users-table">
+							<table class="users-names">
+								<thead>
+									<tr>
+										<th><p>Names</p></th>
+										<th><p>Score</p></th>
+									</tr>
+								</thead>
+								<tbody data-bind="foreach: users">
+									<tr>
+										<td>
+											<p data-bind="text: name"></p>
+										</td>
+										<td>
+											<p data-bind="text: totalScore"></p>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- Users Table -->
+						<div class="users-winnerStand">
+							<h2>Winners Stand</h2>
+							<table type="I" data-bind="foreach: winnerstand">
+								<tr>
+									<td><span data-bind="text: name"></span> :</td>
+									<td data-bind="text: score"></td>
+								</tr>
+							</table>					
+						</div>
+						<!-- Users Winnerstand -->
+					</div>
+					<!-- Users Body -->
+				</div>
+				<!-- Users -->
+				<div class="signUp toggle">
+					<h1>SIGN UP</h1>
+					<form data-bind="submit: validateNewUser">
+					    <p>Name: <input placeholder="Name" data-bind="value: newUserName" /><p>
+					    <p>Username: <input placeholder="Username" data-bind="value: newUserUsername" /></p>
+					    <p>Password: <input type="password" placeholder="Password" data-bind="value: newUserPassword" /></p>
+					    <p>Verify Password: <input type="password" placeholder="Password" data-bind="value: newUserVerifyPassword" /></p>
+					    <input type="submit" value="SIGN UP" />
+					</form>
+				</div>
+				<!-- Signup -->
+				<div class="user toggle" data-bind="foreach: currentUser">
+					<div class="user-menu">
+						<p data-bind="text: name"></p>
+						<p>Total Score : <span data-bind="text: totalScore"></span></p>
+						<input type="button" data-bind="click: $root.showAddDate" value="New Date"/>
+						<input type="button" data-bind="click: $root.publicStatusClicked, value: $root.publicStatusDisplay" />
+					</div>
+					<table class="user-table">
+						<thead>
+							<tr class="user-header">
+								<th><p>Date</p></th>
+								<th><p class="user-small-screen">Exercise</p></th>
+								<th><p class="user-small-screen">No sugar</p></th>
+								<th><p class="user-small-screen">No soda</p></th>
+								<th><p class="user-small-screen">Healthy Choice</p></th>
+								<th><p class="user-small-screen">Satisfied</p></th>
+								<th><p>Day's Score</p></th>	
+							</tr>
+						</thead>
+						<tbody class="user-table" data-bind="foreach: $root.currentDates">
+							<tr>
+								<td><p data-bind="text: date"></p></td>
+								<td><p data-bind="text: exercise" class="user-small-screen"></p></td>
+								<td><p data-bind="text: sugar" class="user-small-screen"></p></td>
+								<td><p data-bind="text: soda" class="user-small-screen"></p></td>
+								<td><p data-bind="text: healthyChoice" class="user-small-screen"></p></td>
+								<td><p data-bind="text: satisfied" class="user-small-screen"></p></td>
+								<td><p data-bind="text: score"></p></td>
+								<td><input type="button" data-bind="click: $root.editDate" value="EDIT" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<div>
+						<p>This is your Profile. You can add daily entries by clicking on New Date. Clicking on the Public button will change hide your Profile on the main page. Clicking Private will reverse the effect.</p>
+					</div>											
+				</div>
+				<!-- User -->
+				<div class="userDate toggle">
+					<ul data-bind="foreach: currentUserDate">
+						<li>
+							<form data-bind="submit: $root.validateDateInputs">
+								<div data-bind="with: $root">
+									<p data-bind="foreach: currentUser">User: <span id="name" data-bind="text: name"></span></p>
+								</div>
+								<p>Date: <span id="date" data-bind="text: date" ></span></p>
+								<p>Exercise: <input id="exercise" data-bind="value: exercise" disabled /> <input type="button" data-bind="click: $root.addOne('exercise')" value="+" /> <input type="button" data-bind="click: $root.minusOne('exercise')" value="-" /> (+1 for every 10mins of exercise)</p>
+								<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" disabled /> <input type="button" data-bind="click: $root.addOne('healthyChoice')" value="+" /> <input type="button" data-bind="click: $root.minusOne('healthyChoice')" value="-" /> (number of healther choices you made)</p>
+								<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" disabled /> <input type="button" data-bind="click: $root.addOne('satisfied')" value="+" /> <input type="button" data-bind="click: $root.minusOne('satisfied')" value="-" />( number of meals eatten until satisfied)</p>
+								<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedBoolean('soda')" />(true if you did not drinks soda or false if you did)</p>
+								<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedBoolean('sugar')" />(true if you did not consume sugar or false if you did)</p>
+								<input type="submit" value="SAVE" />
+								<input type="button" class="userDate-button-delete" data-bind="click: $root.deleteUserDate" value="DELETE" />
+							</form>
+						</li>
+					</ul>
+					<div>
+						<p>Your score will automatically be calculated :)</p>
 					</div>
 				</div>
-				<div class="users-winnerStand">
-					<h2>Winners Stand</h2>
-					<ol type="I" data-bind="foreach: winnerstand">
-						<li>
-							<p><span data-bind="text: name"></span> : <span data-bind="text: score"></span></p>
-						</li>
-					</ul>					
-				</div>
-			</div>
-			<!-- Users -->
-			<div class="signUp toggle">
-				<h1>SIGN UP</h1>
-				<form data-bind="submit: validateNewUser">
-				    <p>Name: <input placeholder="Name" data-bind="value: newUserName" /><p>
-				    <p>Username: <input placeholder="Username" data-bind="value: newUserUsername" /></p>
-				    <p>Password: <input type="password" placeholder="Password" data-bind="value: newUserPassword" /></p>
-				    <p>Verify Password: <input type="password" placeholder="Password" data-bind="value: newUserVerifyPassword" /></p>
-				    <button type="submit">SIGN UP</button>
-				</form>
-			</div>
-			<!-- New User -->
-			<div class="user toggle" data-bind="foreach: currentUser">
-				<div class="user-menu">
-					<p data-bind="text: name"></p>
-					<p>Total Score : <span data-bind="text: totalScore"></span></p>
-					<input type="button" data-bind="click: $root.showAddDate" value="New Date"/>
-					<input type="button" data-bind="click: $root.publicStatusClicked, value: $root.publicStatusDisplay" />
-				</div>
-				<div class="user-header">
-					<p>Date</p>
-					<p class="user-small-screen">Exercise</p>	
-					<p class="user-small-screen">No sugar</p>
-					<p class="user-small-screen">No soda</p>
-					<p class="user-small-screen">Healthy Choice</p>						
-					<p class="user-small-screen">Satisfied</p>						
-					<p>Day's Score</p>	
-				</div>
-				<ul class="user-table" data-bind="foreach: $root.currentDates">
-					<li>
-						<p data-bind="text: date"></p>
-						<p data-bind="text: exercise" class="user-small-screen"></p>
-						<p data-bind="text: sugar" class="user-small-screen"></p>	
-						<p data-bind="text: soda" class="user-small-screen"></p>
-						<p data-bind="text: healthyChoice" class="user-small-screen"></p>
-						<p data-bind="text: satisfied" class="user-small-screen"></p>
-						<p data-bind="text: score"></p>
-						<button data-bind="click: $root.editDate">EDIT</button>
-					</li>
-				</ul>
-				<div>
-					<p>This is your Profile. You can add daily entries by clicking on New Date. Clicking on the Public button will change hide your Profile on the main page. Clicking Private will reverse the effect.</p>
-				</div>											
-			</div>
-			<!-- User -->
-			<div class="userDate toggle">
-				<ul data-bind="foreach: currentUserDate">
-					<li>
-						<form data-bind="submit: $root.validateDateInputs">
-							<div data-bind="with: $root">
-								<p data-bind="foreach: currentUser">User: <span id="name" data-bind="text: name"></span></p>
-							</div>
-							<p>Date: <span id="date" data-bind="text: date" ></span></p>
-							<p>Exercise: <input id="exercise" data-bind="value: exercise" disabled /> <input type="button" data-bind="click: $root.addOne('exercise')" value="+" /> <input type="button" data-bind="click: $root.minusOne('exercise')" value="-" /> (+1 for every 10mins of exercise)</p>
-							<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" disabled /> <input type="button" data-bind="click: $root.addOne('healthyChoice')" value="+" /> <input type="button" data-bind="click: $root.minusOne('healthyChoice')" value="-" /> (number of healther choices you made)</p>
-							<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" disabled /> <input type="button" data-bind="click: $root.addOne('satisfied')" value="+" /> <input type="button" data-bind="click: $root.minusOne('satisfied')" value="-" />( number of meals eatten until satisfied)</p>
-							<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedBoolean('soda')" />(true if you did not drinks soda or false if you did)</p>
-							<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedBoolean('sugar')" />(true if you did not consume sugar or false if you did)</p>
-							<button type="submit">SAVE</button>
-							<button class="userDate-button-delete" data-bind="click: $root.deleteUserDate">DELETE</button>
-						</form>
-					</li>
-				</ul>
-				<div>
-					<p>Your score will automatically be calculated :)</p>
-				</div>
-			</div>
-			<!-- userDate -->
+				<!-- userDate -->
 
-			<div class="newUserDate toggle">
-				<div data-bind="foreach: currentUser">
-					<h2 data-bind="text: name"></h2>
+				<div class="newUserDate toggle">
+					<div data-bind="foreach: currentUser">
+						<h2 data-bind="text: name"></h2>
+					</div>
+					<p>New Date</p>
+					<input type="date" data-bind="value: newUserDate">
+					<input type="button" data-bind="click: validateDate" value="ADD" />
 				</div>
-				<p>New Date</p>
-				<input type="date" data-bind="value: newUserDate">
-				<button data-bind="click: validateDate">ADD</button>
-			</div>
+			</section>
 		</div>
 		<!-- container -->
 	</main>

@@ -308,7 +308,7 @@ var ViewModel = function(Model) {
 
 	// validates the new user fields have content
 	this.validateNewUser = function(event) {
-		event.preventDefault();
+		// event.preventDefault();
 		if (!self.newUserName()) {
 			return alert('Missing field: Name');
 		}
@@ -333,7 +333,7 @@ var ViewModel = function(Model) {
 
 	// validate user name and password fields are filled
 	this.validateLogin = function(event) {
-		event.preventDefault();
+		// event.preventDefault();
 
 		if (!self.userUsername()) {
 			return alert('Username Required');

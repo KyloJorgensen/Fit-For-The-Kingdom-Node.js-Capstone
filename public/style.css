@@ -1,191 +1,105 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
 body {
-	background-image: url("images/IMG_0936.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
+	margin: 0;
+	background-color: #f7f7f7;
+}
+
+body, input {
+	font-family: "Raleway", Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+    letter-spacing: 0.09em;
+    line-height: 1.65em;
+}
+
+input[type="submit"], input[type="button"] {
+    background-color: #555;
+    color: #f7f7f7 !important;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    -moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    border-radius: 0;
+    border: 0;
+    cursor: pointer;
+    display: inline-block;
+    height: 2.85em;
+    line-height: 2.95em;
+    padding: 0 1.5em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.container {
+	width: 1200px;
+	margin: 0 auto;
 }
 
 nav {
-	position: fixed;
-	width: 100%;
-	height: 4rem;
-    background-color: #bebedc;
-    margin: -16px -8px;
-}
-
-nav * {
-	display: inline-block;
+	background-color: #00cdcf;
+	padding: 20px;
 }
 
 .nav-title {
-	float: left;
-	padding-left: 4rem;
+	display: inline-block;
+}
+.nav-title h1 {
+	margin: 0;
+    font-size: 2.4em;
 }
 
 .nav-menu {
+	display: inline-block;
 	float: right;
-	padding: 1.3rem;
-	padding-right: 5px;
 }
 
-.nav-menu .loggedIn{
+a {
+	background-color: #009a9c;
+    color: #fff !important;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    border-radius: 0;
+    border: 0;
+    cursor: pointer;
+    height: 2.85em;
+    line-height: 2.95em;
+    padding: 0 1.5em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.login, .signUp {
+	text-align: center;
+	background-color: #009a9c;
+	padding: 3rem;
+}
+
+.loggedIn {
 	display: none;
 }
 
 main {
-	padding: 50px 0px;
+	background-color: #ffffff;
 }
 
-main .container {
-	min-height: 250px;	
-}
-
-.toggle {
-	display: none;
-}
-
-main ul {
-	list-style: none;
-	padding-left: 0px;
-}
-
-.user ul {
-	padding-left: 0px;
-	display: inline-block;
-	width: 100%;
+section {
+	padding: 3rem;
 }
 
 .users-table {
-	width: 60%;
+	width: 50%;
 	display: inline-block;
-}
-
-.users-names ul li {
-	margin: 8px 0px;
+	vertical-align: top;
 }
 
 .users-winnerStand {
-	float: right;
-	width: 30%;
+	vertical-align: top;
 	display: inline-block;
-}
-
-.users-winnerStand ol {
-	padding-left: 0;
-}
-
-.users-names {
-	float: left;
-	width: 130%;
-}
-
-.users-names > * {
-	width: 49%;
-	display: inline-block;
-}
-
-.users-names button {
-	overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-	margin: 3px 0;
-	width: 100%;
-}
-
-.user-header p,
-.user-table p{
-	display: inline-block;
-	width: 13%;
-}
-
-.user-menu * {
-	display: inline-block;
-	padding-right: 20px;
-	width: 20%;
-}
-
-.userDate .userDate-button-delete {
-	float: right;
-}
-
-.userDate input {
-	width: 50px;
-}
-
-footer {
-	background-color: grey;
-	position: fixed;
-	bottom: 0px;
-	margin: 0 -8px;
-	width: 100%;
-}
-
-.container {
-	width: 80%;
-    padding: 25px;
-    background-color: white;
-    margin-top: 60px;
-    margin-bottom: 20px; 
-    margin-right: 10%;
-    margin-left: 10%;
-}
-
-.admin {
-	display: none;
-}
-
-@media screen and (max-width: 1300px) {
-	.user-small-screen {
-		display: none !important;
-	}
-
-	.user-header p,
-	.user-table p {
-		width: 30%;
-	}
-}
-
-@media screen and (max-width: 1150px) {
-	.user-menu * {
-		display: block;
-		width: 100%;
-	}
-	.admin {
-		display: none;
-	}
-
-	.user-menu * span {
-		display: inline;
-	}
-}
-@media screen and (max-width: 600px) {
-	.container {
-		margin-left: 5%;
-	}
-}
-
-@media screen and (max-width: 520px) {
-	nav {
-		height: 7.5rem;
-	}
-	
-	.container {
-		margin-top: 115px;
-	}
-}
-
-@media screen and (max-width: 460px) {
-	.container {
-		margin-top: 115px;
-		width: 260px;
-	}
-}
-
-@media screen and (max-width: 350px) {
-	nav {
-		width: 350px;
-	}
-
-	.conatiner {
-		margin-left: 0;
-	}
 }
