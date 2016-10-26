@@ -36,6 +36,15 @@ input[type="submit"], input[type="button"] {
     text-transform: uppercase;
     white-space: nowrap;
 }
+
+table * {
+	padding-right: 10px;
+}
+
+ul {
+    list-style: none;
+}
+
 .container {
 	width: 1200px;
 	margin: 0 auto;
