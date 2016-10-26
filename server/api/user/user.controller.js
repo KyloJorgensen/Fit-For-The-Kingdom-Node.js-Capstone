@@ -79,7 +79,7 @@ UserController.prototype.createUser = function(req, res, next) {
                 var _user = user;
                 _user['username'] = undefined;
                 _user['password'] = undefined;
-                res.status(201).json(_user);
+                res.status(200).json(_user);
             }).catch(function(error) {
                 next(error);
             });

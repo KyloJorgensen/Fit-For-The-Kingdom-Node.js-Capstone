@@ -33,6 +33,7 @@
     "mongoose": "^4.5.10"
   },
   "devDependencies": {
+    "btoa": "^1.1.2",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "mocha": "^3.0.2"
