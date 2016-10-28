@@ -1,48 +1,137 @@
-# Fit-For-The-Kingdom-Node.js-Capstone
+# Fit For The Kingdom
+	
+# SUMMARY
+This app was made to be a fun and competive place to track you healthy habits from exercise to eating. Allowing users to compare scores with others useing the web site. Users make daily entries of their health habits and their scores are updated.
+	
+# DEMO 
+This is an active demo of website hosted by a server.
+[https://fit-for-the-kingdom-nodejs-cap.herokuapp.com/](https://fit-for-the-kingdom-nodejs-cap.herokuapp.com/)
 
-API Documentation
+# TECHNOLOGIES USED
 
-/ sends user html file
+The front-end is built using Knockout, the back-end using NodeJS with ExpressJS as the web server and MongoDB as the database.
 
-/user 
-  .get request will return array of users
-  .post request with body {username: asdfghjk, password: ******, name: asdffghj} return obj of user of new user
+Java script file is full of Javascript libaraies called modules that are complied to one file with Webpack and Node package Manager. 
 
-/user
-  .get request with header {"Authorization": "Basic " + b64EncodeUnicode(username:password)} will return obj of user
-  
-/user/:userId/:password
-  .delete request with userID and delete password in params with delete user and all of their dates
+Backend is Test with mocha, chai and travis ci. [Click here to see test results](https://travis-ci.org/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone)
 
-/user/publicStatus
-  .put request with header {"Authorization": "Basic " + b64EncodeUnicode(username:password)} will return user changing the public status
+## Modules:
 
-/user/login
-  .post request with body {"Authorization": "Basic " + b64EncodeUnicode(username:password)} will return user
-  
-/date/users
-  .get request with header {"Authorization": "Basic " + b64EncodeUnicode(username:password)} will return all of the dates of that user
-  
-/date/:dateID
-  .get request with header {"Authorization": "Basic " + b64EncodeUnicode(username:password)} and DateID in params will return date of matching Id
-  
-/date 
-  .post request with header {"Authorization": "Basic " + b64EncodeUnicode(username:password)} and body{date: '00/00/2016'} will return date that was created date needs to be string.
-  
-  .put request with header {"Authorization": "Basic " + b64EncodeUnicode(username:password)} amd body{date} will return user
-    date needs to be an object with _id, _author, exercise, healthyChoice, satisfied, sugar, soda properties.
+atob, bcryptjs, body-parser, btoa, chai, chai-http, express, express-passport-logout, jquery, knockout, mocha, and mongoose
+   
     
-  .delete request with header {"Authorization": "Basic " + b64EncodeUnicode(username:password)} and  body{dateId: asdfghjl}} will return user
+# SCREENSHOTS
+## Main Page
+![Main Page](https://raw.githubusercontent.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone/master/screenshots/Screen%20Shot%202016-10-28%20at%2011.14.30%20AM.png)
+## Login Page
+![Login Page](https://raw.githubusercontent.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone/master/screenshots/Screen%20Shot%202016-10-28%20at%2011.14.39%20AM.png)
+## Signup Page
+![Signup Page](https://raw.githubusercontent.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone/master/screenshots/Screen%20Shot%202016-10-28%20at%2011.14.44%20AM.png)
+## User Page
+![User Page](https://raw.githubusercontent.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone/master/screenshots/Screen%20Shot%202016-10-28%20at%2011.15.04%20AM.png)
+## New Date Page
+![New Date Page](https://raw.githubusercontent.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone/master/screenshots/Screen%20Shot%202016-10-28%20at%2011.15.11%20AM.png)
+## Edit Date Page
+![Edit Date Page](https://raw.githubusercontent.com/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone/master/screenshots/Screen%20Shot%202016-10-28%20at%2011.15.18%20AM.png)
 
-This is desired for the purpose of tracking possitive health habits. A user can sign up and later login in and out to their profile. When a user is logged in can view all of their daily entries of their habits, add new dates, delete dates, edit dates, and change if there name and score are viewable by other users.
+# API
 
-technology used.
+## MAIN ENDPOINT
 
-Javascript, css, html
-jquery, and knockout
-node.js for back end server
-express, bcryptjs, body-paser as server modules
-node package manager
-mongo with mongoose for database
-mocha with chai and chai-http and Tarvis-CI for testing
+GET HTML FILE
 
+	method: get
+	path: /
+	returns: html file
+
+## USER ENDPOINT
+
+GET ALL USER NAMES
+
+	method: get
+	path: /user/all
+	returns: array of users names
+
+GET A USER
+
+	headers: "Authorization": "Basic " + b64EncodeUnicode(username:password)
+	method: get
+	path: /user
+	returns: User
+
+CREATE A USER
+
+	method: post
+	path: /user
+	body: 
+	      required: username, password, and name
+	returns: User
+
+
+DELETE A USER
+
+	method: delete
+	path: /user/:userId/:password
+	body: 
+	      required: _characterId, and _id
+	returns: {message: 'delete ' + username}
+
+UPDATE A USER PUBLIC STATUS
+
+	headers: "Authorization": "Basic " + b64EncodeUnicode(username:password)
+	method: put
+	path: /user/publicStatus
+	body: 
+	      required: _characterId, and _id
+	      Optional: name, type, check_penalty, spell_failure, weight, properties, and/or max_dex_bonus
+	returns: User
+
+LOGIN USER
+
+	headers: "Authorization": "Basic " + b64EncodeUnicode(username:password)
+	method: post
+	path: /user/login
+	returns: User
+
+## DATE ENDPOINT
+
+GET ALL USER DATES
+
+	header: "Authorization": "Basic " + b64EncodeUnicode(username:password)
+	method: get
+	path: /date/users
+	returns: array of dates
+
+GET A DATE
+
+	headers: "Authorization": "Basic " + b64EncodeUnicode(username:password)
+	method: get
+	path: /date/:dateId
+	returns: date
+
+CREATE A DATE
+
+	headers: "Authorization": "Basic " + b64EncodeUnicode(username:password)
+	method: post
+	path: /date
+	body: 
+	      required: date: "00/00/0000"
+	returns: date
+
+UPDATE A DATE
+
+	headers: "Authorization": "Basic " + b64EncodeUnicode(username:password)
+	method: put
+	path: /date
+	body: 
+	      required: _id, _author, exercise, healthyChoice, satisfied, sugar, and soda
+	returns: User
+
+DELETE A USER
+
+	headers: "Authorization": "Basic " + b64EncodeUnicode(username:password)
+	method: delete
+	path: /date
+	body: 
+	      required: dateId
+	returns: User
