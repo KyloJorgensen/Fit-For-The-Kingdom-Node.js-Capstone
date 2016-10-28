@@ -1,7 +1,7 @@
 # Fit For The Kingdom
 	
 # SUMMARY
-This app was made to be a fun and competive place to track you healthy habits from exercise to eating. Allowing users to compare scores with others useing the web site. Users make daily entries of their health habits and their scores are updated.
+This app was made to be a fun and competitive place to track you healthy habits from exercise to eating. Allowing users to compare scores with others using the web site. Users make daily entries of their health habits and their scores are updated.
 	
 # DEMO 
 This is an active demo of website hosted by a server.
@@ -11,9 +11,9 @@ This is an active demo of website hosted by a server.
 
 The front-end is built using Knockout, the back-end using NodeJS with ExpressJS as the web server and MongoDB as the database.
 
-Java script file is full of Javascript libaraies called modules that are complied to one file with Webpack and Node package Manager. 
+Java script file is full of Javascript libraries called modules that are complied to one file with Webpack and Node package Manager. 
 
-Backend is Test with mocha, chai and travis ci. [Click here to see test results](https://travis-ci.org/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone)
+Backend is Test with Mocha, Chai and Travis CI. [Click here to see test results](https://travis-ci.org/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone)
 
 ## Modules:
 
