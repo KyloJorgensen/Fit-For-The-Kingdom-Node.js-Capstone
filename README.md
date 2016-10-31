@@ -11,7 +11,7 @@ This is an active demo of website hosted by a server.
 
 The front-end is built using Knockout, the back-end using NodeJS with ExpressJS as the web server and MongoDB as the database.
 
-Javascript file is full of Javascript libraries called modules that are complied to one file with Webpack and Node package Manager. 
+Javascript file is full of Javascript libraries called modules from NPM (Node package Manager). 
 
 Backend is Test with Mocha, Chai and Travis CI. [Click here to see test results](https://travis-ci.org/KyloJorgensen/Fit-For-The-Kingdom-Node.js-Capstone)
 
