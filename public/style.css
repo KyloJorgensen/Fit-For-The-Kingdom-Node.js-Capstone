@@ -35,6 +35,7 @@ input[type="submit"], input[type="button"] {
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
+    margin-bottom: 5px;
 }
 
 table * {
@@ -45,10 +46,7 @@ ul {
     list-style: none;
 }
 
-.container {
-	width: 1200px;
-	margin: 0 auto;
-}
+
 
 nav {
 	background-color: #00cdcf;
@@ -64,8 +62,11 @@ nav {
 }
 
 .nav-menu {
-	display: inline-block;
-	float: right;
+    text-align: right;
+}
+
+.nav-menu a {
+    width: 110px;
 }
 
 a {
@@ -88,8 +89,14 @@ a {
 	text-align: center;
 	background-color: #009a9c;
 	padding: 3rem;
+    max-width: 180px;
+    margin: auto;
 }
 
+.login p, .signUp p {
+    text-align: center;
+}
+ 
 .loggedIn {
 	display: none;
 }
@@ -99,7 +106,7 @@ main {
 }
 
 section {
-	padding: 3rem;
+	padding: 3rem 1rem;
 }
 
 .users-table {
@@ -111,4 +118,38 @@ section {
 .users-winnerStand {
 	vertical-align: top;
 	display: inline-block;
+}
+
+.user-small-screen {
+    display: none;
+}
+
+@media screen and (min-width: 500px) {
+    section {
+        padding: 3rem;
+    }
+    .login p, .signUp p {
+        text-align: right;
+    }
+
+    .login, .signUp {
+        max-width: 300px;
+    }
+}
+
+@media screen and (min-width: 700px) {
+    .nav-menu {
+        float: right;
+    }
+
+    .user-small-screen {
+        display: table-cell;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 1200px;
+        margin: 0 auto;
+    }
 }

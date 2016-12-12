@@ -38,7 +38,7 @@
 				<div class="users toggle">
 					<div>
 						<h1>Welcome!!</h1>
-						<h3>A healthy habit tracking website. Join us in our little competition. </h3>
+						<h3>A fun and easy way to improve health by simple habits. Join us in our little competition. </h3>
 					</div>
 					<div class="users-body">
 						<div class="users-table">
@@ -98,22 +98,22 @@
 						<thead>
 							<tr class="user-header">
 								<th><p>Date</p></th>
-								<th><p class="user-small-screen">Exercise</p></th>
-								<th><p class="user-small-screen">No sugar</p></th>
-								<th><p class="user-small-screen">No soda</p></th>
-								<th><p class="user-small-screen">Healthy Choice</p></th>
-								<th><p class="user-small-screen">Satisfied</p></th>
+								<th class="user-small-screen"><p>Exercise</p></th>
+								<th class="user-small-screen"><p>No sugar</p></th>
+								<th class="user-small-screen"><p>No soda</p></th>
+								<th class="user-small-screen"><p>Healthy Choice</p></th>
+								<th class="user-small-screen"><p>Satisfied</p></th>
 								<th><p>Day's Score</p></th>	
 							</tr>
 						</thead>
 						<tbody class="user-table" data-bind="foreach: $root.currentDates">
 							<tr>
 								<td><p data-bind="text: date"></p></td>
-								<td><p data-bind="text: exercise" class="user-small-screen"></p></td>
-								<td><p data-bind="text: sugar" class="user-small-screen"></p></td>
-								<td><p data-bind="text: soda" class="user-small-screen"></p></td>
-								<td><p data-bind="text: healthyChoice" class="user-small-screen"></p></td>
-								<td><p data-bind="text: satisfied" class="user-small-screen"></p></td>
+								<td class="user-small-screen"><p data-bind="text: exercise"></p></td>
+								<td class="user-small-screen"><p data-bind="text: sugar"></p></td>
+								<td class="user-small-screen"><p data-bind="text: soda"></p></td>
+								<td class="user-small-screen"><p data-bind="text: healthyChoice"></p></td>
+								<td class="user-small-screen"><p data-bind="text: satisfied"></p></td>
 								<td><p data-bind="text: score"></p></td>
 								<td><input type="button" data-bind="click: $root.editDate" value="EDIT" /></td>
 							</tr>
@@ -132,18 +132,23 @@
 									<h1 data-bind="foreach: currentUser">User: <span id="name" data-bind="text: name"></span></h1>
 								</div>
 								<p>Date: <span id="date" data-bind="text: date" ></span></p>
-								<p>Exercise: <input id="exercise" data-bind="value: exercise" disabled /> <input type="button" data-bind="click: $root.addOne('exercise')" value="+" /> <input type="button" data-bind="click: $root.minusOne('exercise')" value="-" /> (One point for every 10mins of exercise.)</p>
-								<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" disabled /> <input type="button" data-bind="click: $root.addOne('healthyChoice')" value="+" /> <input type="button" data-bind="click: $root.minusOne('healthyChoice')" value="-" /> (Number of healthier choices you made. Example choose to eat and apple instead of a candybar.)</p>
-								<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" disabled /> <input type="button" data-bind="click: $root.addOne('satisfied')" value="+" /> <input type="button" data-bind="click: $root.minusOne('satisfied')" value="-" />( Number of meals eaten until satisfied [0-3].)</p>
-								<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedBoolean('soda')" />(True if you didn't drink any soda.False if you did.)</p>
-								<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedBoolean('sugar')" />(True if you didn't eat or drink sugar. False if you did.)</p>
+								<p>Exercise: <input id="exercise" data-bind="value: exercise" disabled /> <input type="button" data-bind="click: $root.addOne('exercise')" value="+" /> <input type="button" data-bind="click: $root.minusOne('exercise')" value="-" /></p>
+								<p>(One point for every 10mins of exercise.)</p>
+								<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" disabled /> <input type="button" data-bind="click: $root.addOne('healthyChoice')" value="+" /> <input type="button" data-bind="click: $root.minusOne('healthyChoice')" value="-" /></p>
+								<p>(Number of healthier choices you made. Example choose to eat and apple instead of a candybar.)</p>
+								<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" disabled /> <input type="button" data-bind="click: $root.addOne('satisfied')" value="+" /> <input type="button" data-bind="click: $root.minusOne('satisfied')" value="-" /></p>
+								<p>( Number you ate with out over eating or under eating [0-3].)</p>
+								<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedBoolean('soda')" /></p>
+								<p>(True if you drank no soda. False if you did.)</p>
+								<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedBoolean('sugar')" /></p>
+								<p>(True if you ate or drank no sugar. False if you did.)</p>
 								<input type="submit" value="SAVE" />
 								<input type="button" class="userDate-button-delete" data-bind="click: $root.deleteUserDate" value="DELETE" />
 							</form>
 						</li>
 					</ul>
 					<div>
-						<p>Your score will automatically be calculated when you hit save. :)</p>
+						<p>Here you edit one of your day's habits. you score points based on how you did. Your score will automatically be calculated when you hit save. :)</p>
 					</div>
 				</div>
 				<!-- userDate -->
