@@ -132,17 +132,39 @@
 								<div data-bind="with: $root">
 									<h1 data-bind="foreach: currentUser">User: <span id="name" data-bind="text: name"></span></h1>
 								</div>
-								<p>Date: <span id="date" data-bind="text: date" ></span></p>
-								<p>Exercise: <input id="exercise" data-bind="value: exercise" disabled /> <input type="button" data-bind="click: $root.addOne('exercise')" value="+" /> <input type="button" data-bind="click: $root.minusOne('exercise')" value="-" /></p>
+
+								<h2>Date: <span id="date" data-bind="text: date" ></span></h2>
+
+								<h2>Exercise: <span id="exercise" data-bind="text: exercise"></span></h2>
+								<div>
+								 	<input type="button" data-bind="click: $root.addOne('exercise')" value="+" /> 
+								 	<input type="button" data-bind="click: $root.minusOne('exercise')" value="-" />
+								</div>
 								<p>(One point for every 10mins of exercise.)</p>
-								<p>Healthy Choice: <input type="number" min="0"  id="healthyChoice" data-bind="value: healthyChoice" disabled /> <input type="button" data-bind="click: $root.addOne('healthyChoice')" value="+" /> <input type="button" data-bind="click: $root.minusOne('healthyChoice')" value="-" /></p>
+
+								<h2>Healthy Choice: <span id="healthyChoice" data-bind="text: healthyChoice"></span></h2>
+
+								<div>
+									<input type="button" data-bind="click: $root.addOne('healthyChoice')" value="+" />
+									<input type="button" data-bind="click: $root.minusOne('healthyChoice')" value="-" />
+								</div>
 								<p>(Number of healthier choices you made. Example choose to eat and apple instead of a candybar.)</p>
-								<p>Satisfied: <input type="number" min="0" max="3" id="satisfied" data-bind="value: satisfied" disabled /> <input type="button" data-bind="click: $root.addOne('satisfied')" value="+" /> <input type="button" data-bind="click: $root.minusOne('satisfied')" value="-" /></p>
+
+								<h2>Satisfied: <span id="satisfied" data-bind="text: satisfied"></span></h2>
+								<div class="plus-minus-buttons">
+									<input type="button" data-bind="click: $root.addOne('satisfied')" value="+" />
+									<input type="button" data-bind="click: $root.minusOne('satisfied')" value="-" />
+								</div>
 								<p>( Number you ate with out over eating or under eating [0-3].)</p>
-								<p>No Soda <input type="button" id="soda" data-bind="value: soda, click: $root.clickedBoolean('soda')" /></p>
+
+								<h2>No Soda</h2>
+								<input type="button" id="soda" data-bind="value: soda, click: $root.clickedBoolean('soda')" />
 								<p>(True if you drank no soda. False if you did.)</p>
-								<p>No Sugar <input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedBoolean('sugar')" /></p>
+
+								<h2>No Sugar</h2>
+								<input type="button" id="sugar" data-bind="value: sugar, click: $root.clickedBoolean('sugar')" />
 								<p>(True if you ate or drank no sugar. False if you did.)</p>
+
 								<input type="submit" value="SAVE" />
 								<input type="button" class="userDate-button-delete" data-bind="click: $root.deleteUserDate" value="DELETE" />
 							</form>

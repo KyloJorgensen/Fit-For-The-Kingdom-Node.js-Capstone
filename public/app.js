@@ -414,6 +414,12 @@ var ViewModel = function(Model) {
 	this.addOne = function(property) {
 		if (dateGenerated) {
 			var value = self.date[property] + 1;
+			if (property == "satisfied") {
+				if (value > 3) {
+					self.date[property] = 3;
+					value = 3;
+				}
+			}
 			self.updateCurrentDate(null, property, value);
 		}
 	};
@@ -422,6 +428,10 @@ var ViewModel = function(Model) {
 	this.minusOne = function(property) {
 		if (dateGenerated) {
 			var value = self.date[property] - 1;
+			if (value < 0) {
+				self.date[property] = 0;
+				value = 0;
+			}
 			self.updateCurrentDate(null, property, value);
 		}
 	};
