@@ -112,22 +112,32 @@ section {
 }
 
 .users-table {
-	width: 50%;
 	display: inline-block;
 	vertical-align: top;
 }
 
 .users-winnerStand {
 	vertical-align: top;
-	display: inline-block;
     text-align: right;
 }
+
+.users-winnerStand h2 {
+    text-align: left;
+}
+
 .users-winnerStand table span {
     padding: 0;
 }
 
 .user-small-screen {
     display: none;
+}
+
+@media screen and (min-width: 400px) {
+    .users-winnerStand {
+        float: right;
+        width: 50%;
+    }
 }
 
 @media screen and (min-width: 500px) {

@@ -42,6 +42,16 @@
 						<h3>A fun and easy way to improve health by simple habits. Join us in our little competition. </h3>
 					</div>
 					<div class="users-body">
+						<div class="users-winnerStand">
+							<h2>Winners Stand</h2>
+							<table type="I" data-bind="foreach: winnerstand">
+								<tr>
+									<td><span data-bind="text: name"></span>:</td>
+									<td data-bind="text: score"></td>
+								</tr>
+							</table>					
+						</div>
+						<!-- Users Winnerstand -->
 						<div class="users-table">
 							<table class="users-names">
 								<thead>
@@ -63,16 +73,6 @@
 							</table>
 						</div>
 						<!-- Users Table -->
-						<div class="users-winnerStand">
-							<h2>Winners Stand</h2>
-							<table type="I" data-bind="foreach: winnerstand">
-								<tr>
-									<td><span data-bind="text: name"></span>:</td>
-									<td data-bind="text: score"></td>
-								</tr>
-							</table>					
-						</div>
-						<!-- Users Winnerstand -->
 					</div>
 					<!-- Users Body -->
 				</div>
