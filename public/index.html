@@ -96,7 +96,7 @@
 						<input type="button" data-bind="click: $root.publicStatusClicked, value: $root.publicStatusDisplay" />
 					</div>
 					<table class="user-table">
-						<thead>
+						<thead class="user-table-head">
 							<tr class="user-header">
 								<th><p>Date</p></th>
 								<th class="user-small-screen"><p>Exercise</p></th>
@@ -107,7 +107,7 @@
 								<th><p>Day's Score</p></th>	
 							</tr>
 						</thead>
-						<tbody class="user-table" data-bind="foreach: $root.currentDates">
+						<tbody class="user-table-body" data-bind="foreach: $root.currentDates">
 							<tr>
 								<td><p data-bind="text: date"></p></td>
 								<td class="user-small-screen"><p data-bind="text: exercise"></p></td>
